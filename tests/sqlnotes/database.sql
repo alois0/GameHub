@@ -1,20 +1,27 @@
 CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL, -- Accommodate hashed passwords
     email VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
+    address VARCHAR(100),
+    payment VARCHAR(100),
+    user_role VARCHAR(10) DEFAULT 'user',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(100) NOT NULL UNIQUE,
-    description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    category_name VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT
+);
+
+CREATE TABLE platform (
+    platform_id INT AUTO_INCREMENT PRIMARY KEY,
+    platform_code VARCHAR(10) NOT NULL UNIQUE, -- Renamed for clarity
+    description TEXT
 );
 
 CREATE TABLE products (
@@ -45,27 +52,6 @@ CREATE TABLE order_details (
     price_each DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
-);
-
-CREATE TABLE user_addresses (
-    address_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    street VARCHAR(255),
-    city VARCHAR(100),
-    state VARCHAR(100),
-    postal_code VARCHAR(20),
-    country VARCHAR(100),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-
-CREATE TABLE payment_methods (
-    payment_method_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    card_type ENUM('Visa', 'MasterCard', 'American Express', 'Discover'),
-    card_number VARCHAR(16),
-    card_expiry DATE,
-    card_cvv VARCHAR(4),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE product_reviews (
