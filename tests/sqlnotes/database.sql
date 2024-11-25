@@ -32,7 +32,18 @@ CREATE TABLE products (
     stock_quantity INT DEFAULT 0,
     category_id INT,
     release_date DATETIME,
+);
+
+CREATE TABLE grouped (
+    productcategory_id INT AUTO_INCREMENT PRIMARY KEY,
+    FOREIGN KEY (product_id) REFERENCES products(product_id),
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
+);
+
+CREATE TABLE host (
+    productplatform_id INT AUTO_INCREMENT PRIMARY KEY,
+    FOREIGN KEY (product_id) REFERENCES products(product_id),
+    FOREIGN KEY (platform_id) REFERENCES platform(platform_id)
 );
 
 CREATE TABLE orders (
