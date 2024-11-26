@@ -6,44 +6,44 @@ body{
     background-color:#383838 ;
 }
 
-/* app.css */
+
 .navbar {
-    background-color: #882c2c !important; /* Black background */
+    background-color: #882c2c !important; 
 }
 
 .navbar .navbar-brand {
-    color: #ffffff !important; /* White brand text */
+    color: #ffffff !important; 
 }
 
 .navbar .nav-link {
-    color: #ffffff !important; /* White nav links */
+    color: #ffffff !important; 
 }
 
 .navbar .nav-link:hover {
-    color: #ffd700 !important; /* Gold color on hover */
+    color: #ffd700 !important; 
 }
 
 .navbar .nav-item.dropdown .dropdown-menu {
-    background-color: #000000; /* Black dropdown menu background */
+    background-color: #000000; 
 }
 
 .navbar .dropdown-item {
-    color: #ffffff; /* White dropdown item text */
+    color: #ffffff; 
 }
 
 .navbar .dropdown-item:hover {
-    background-color: #ffd700; /* Gold background on dropdown item hover */
-    color: #000000; /* Black text color on hover */
+    background-color: #ffd700; 
+    color: #000000; 
 }
 
 .navbar .navbar-toggler {
-    background-color: #ffd700; /* Gold color for the toggler button */
+    background-color: #ffd700; 
 }
 
 .dropdown-divider {
-    background-color: #ffffff; /* White divider */
-    height: 1px; /* Ensure it has height */
-    margin: 0.5rem 0; /* Margin for spacing */
+    background-color: #ffffff; 
+    height: 1px; 
+    margin: 0.5rem 0; 
 }
 
 
