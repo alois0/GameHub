@@ -35,12 +35,20 @@ CREATE TABLE products (
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
-CREATE TABLE product_platform (
+CREATE TABLE product_platform (    #nom temporaire 
     product_id INT NOT NULL,
     platform_id INT NOT NULL,
     PRIMARY KEY (product_id, platform_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
     FOREIGN KEY (platform_id) REFERENCES platform(platform_id) ON DELETE CASCADE
+);
+
+CREATE TABLE product_category (     #nom temporaire 
+    product_id INT NOT NULL,
+    category_id INT NOT NULL,
+    PRIMARY KEY (product_id, category_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders (
