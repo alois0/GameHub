@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('home'); // Ajout d'un nom de route pour la page d'accueil
+}); 
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
