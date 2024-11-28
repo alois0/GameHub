@@ -5,12 +5,25 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
-    address VARCHAR(100),
+    address VARCHAR(100), #changer le nom par ville
     payment VARCHAR(100),
     user_role VARCHAR(10) DEFAULT 'user',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+
+    codepostal INT(5) NOT NULL,
+    rue VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE Phone (
+    id  INT AUTO_INCREMENT PRIMARY KEY,
+    tel VARCHAR(10) NOT NULL UNIQUE,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    
+);
+
+
 
 CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
