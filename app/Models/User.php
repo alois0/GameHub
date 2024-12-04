@@ -11,7 +11,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-     * Les attributs qui peuvent être massivement assignés.
+     * Les attributs massivement assignables.
      */
     protected $fillable = [
         'name',
@@ -31,12 +31,20 @@ class User extends Authenticatable
     ];
 
     /**
-     * Les attributs qui doivent être castés.
+     * Les attributs castés.
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Relation : Un utilisateur possède un panier.
+     */
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'user_id'); // Un utilisateur a un panier
+    }
 
     /**
      * Relation : Un utilisateur peut avoir plusieurs numéros de téléphone.

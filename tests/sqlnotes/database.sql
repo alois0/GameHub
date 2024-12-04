@@ -1,29 +1,25 @@
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Utilisation de 'id' comme clé primaire
     name VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL, 
     email VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
-    address VARCHAR(100), #changer le nom par ville
+    ville VARCHAR(100),
     payment VARCHAR(100),
     user_role VARCHAR(10) DEFAULT 'user',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     codepostal INT(5) NOT NULL,
     rue VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Phone (
-    id  INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     tel VARCHAR(10) NOT NULL UNIQUE,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(id)
-    
 );
-
-
 
 CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -38,7 +34,7 @@ CREATE TABLE platform (
 );
 
 CREATE TABLE products (
-    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Utilisation de 'id' comme clé primaire pour la table produits
     product_name VARCHAR(100) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
@@ -48,19 +44,19 @@ CREATE TABLE products (
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
-CREATE TABLE product_platform (    #nom temporaire 
+CREATE TABLE product_platform (
     product_id INT NOT NULL,
     platform_id INT NOT NULL,
     PRIMARY KEY (product_id, platform_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     FOREIGN KEY (platform_id) REFERENCES platform(platform_id) ON DELETE CASCADE
 );
 
-CREATE TABLE product_category (     #nom temporaire 
+CREATE TABLE product_category (
     product_id INT NOT NULL,
     category_id INT NOT NULL,
     PRIMARY KEY (product_id, category_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
 );
 
@@ -80,7 +76,7 @@ CREATE TABLE order_details (
     quantity INT NOT NULL DEFAULT 1,
     price_each DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
 CREATE TABLE product_reviews (
@@ -90,7 +86,28 @@ CREATE TABLE product_reviews (
     rating INT CHECK (rating >= 1 AND rating <= 5),
     review_text TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE carts (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Utilisation de 'id' comme clé primaire
+    user_id INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE cart_products (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Utilisation de 'id' comme clé primaire
+    cart_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    price DECIMAL(10, 2) NOT NULL, -- Prix au moment de l'ajout au panier
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (cart_id) REFERENCES carts(id) ON DELETE CASCADE,  -- Référence à 'id' dans la table 'carts'
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE  -- Référence à 'id' dans la table 'products'
+);
+
 

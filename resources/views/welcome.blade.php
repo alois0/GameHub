@@ -15,8 +15,13 @@
         <ul class="flex gap-4">
             @auth
                 <li>
+                <a href="{{ route('products.index') }}" class="hover:text-green-500">Produits</a> 
+                </li>
+                <li>
                 <a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a>
-
+                </li>
+                <li>
+                <a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a>
                 </li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
