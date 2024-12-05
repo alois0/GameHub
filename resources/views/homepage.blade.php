@@ -188,6 +188,22 @@
       </div>
     </div>
   </div>
+
+  <div class="products">
+        @if($latestProducts->count() > 0)
+            @foreach($latestProducts as $product)
+                <div class="product">
+                    <h3>{{ $product->product_name }}</h3>
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}" style="width:150px; height:150px;">
+                    <p>{{ $product->description }}</p>
+                    <p>Price: ${{ $product->price }}</p>
+                    <p>Released: {{ \Carbon\Carbon::parse($product->release_date)->format('M d, Y') }}</p>
+                </div>
+            @endforeach
+        @else
+            <p>No products found.</p>
+        @endif
+    </div>
     
     
 
