@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panier - GameHub</title>
+    <title>Checkout - GameHub</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
@@ -29,62 +29,56 @@
         </ul>
     </nav>
 
-    <!-- Contenu du panier -->
+    <!-- Checkout Section -->
     <div class="container mx-auto mt-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Votre Panier</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Résumé du Panier</h1>
 
-        @if($cart->products->count() > 0)
-            <div class="overflow-x-auto bg-white shadow-lg rounded-lg p-4">
-                <table class="min-w-full table-auto">
+        <!-- Affichage du panier -->
+        <div class="bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold text-gray-800">Produits dans votre Panier</h2>
+
+            @if($cart->products->count() > 0)
+                <table class="table-auto w-full mt-4">
                     <thead>
                         <tr>
                             <th class="px-4 py-2 text-left">Produit</th>
                             <th class="px-4 py-2 text-left">Quantité</th>
-                            <th class="px-4 py-2 text-left">Prix Unitaire</th>
-                            <th class="px-4 py-2 text-left">Total</th>
-                            <th class="px-4 py-2 text-left">Action</th>
+                            <th class="px-4 py-2 text-left">Prix</th>
+                            <th class="px-4 py-2 text-left">Sous-total</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($cart->products as $product)
-                            <tr>
+                            <tr class="border-b">
                                 <td class="px-4 py-2">{{ $product->product_name }}</td>
                                 <td class="px-4 py-2">{{ $product->pivot->quantity }}</td>
                                 <td class="px-4 py-2">{{ number_format($product->pivot->price, 2) }} €</td>
                                 <td class="px-4 py-2">{{ number_format($product->pivot->price * $product->pivot->quantity, 2) }} €</td>
-                                <td class="px-4 py-2">
-                                    <!-- Bouton pour supprimer le produit du panier -->
-                                    
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
 
-                <!-- Affichage du total -->
-                <div class="mt-4 text-right">
-                    <strong>Total : </strong>
-                    <span class="text-xl font-bold">{{ number_format($cart->products->sum(function ($product) {
-                        return $product->pivot->price * $product->pivot->quantity;
-                    }), 2) }} €</span>
+                <div class="text-right mt-4">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        Total : {{ number_format($cart->products->sum(fn($product) => $product->pivot->price * $product->pivot->quantity), 2) }} €
+                    </h3>
                 </div>
+            @else
+                <p class="text-gray-600">Votre panier est vide.</p>
+            @endif
+        </div>
 
-                <!-- Vider le panier -->
-                <div class="mt-4 text-center">
-                    <form action="{{ route('cart.clear') }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Vider le Panier</button>
-                    </form>
-                </div>
-            </div>
-        @else
-            <p class="text-center text-gray-700">Votre panier est vide.</p>
-        @endif
+        <!-- Formulaire de commande -->
+        <div class="bg-white shadow-lg rounded-lg p-4 mt-6">
+            <h2 class="text-xl font-semibold text-gray-800">Détails de la Commande</h2>
+
+            <form action="{{ route('checkout.store') }}" method="POST">
+    @csrf
+    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Passer la Commande</button>
+</form>
+
+        </div>
     </div>
-    <!-- Bouton vers le Checkout -->
-<div class="mt-4 text-center">
-    <a href="{{ route('checkout') }}" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Passer à la caisse</a>
-</div>
 </body>
 </html>

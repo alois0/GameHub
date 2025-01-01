@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,5 +52,11 @@ class User extends Authenticatable
     public function phones()
     {
         return $this->hasMany(Phone::class);
+    }
+
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

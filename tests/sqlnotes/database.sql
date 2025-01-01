@@ -61,7 +61,7 @@ CREATE TABLE product_category (
 );
 
 CREATE TABLE orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     total_price DECIMAL(10, 2) NOT NULL,
     order_date DATETIME DEFAULT CURRENT_TIMESTAMP,

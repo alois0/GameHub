@@ -55,6 +55,6 @@ class ProductController extends Controller
         }
 
         // Rediriger vers le panier avec un message de succès
-        return redirect()->route('cart.index')->with('success', 'Produit ajouté au panier');
+        return back()->with('success', 'Produit ajouté au panier');
     }
 }
