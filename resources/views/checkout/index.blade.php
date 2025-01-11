@@ -71,12 +71,15 @@
 
         <!-- Formulaire de commande -->
         <div class="bg-white shadow-lg rounded-lg p-4 mt-6">
-            <h2 class="text-xl font-semibold text-gray-800">Détails de la Commande</h2>
+            
 
-            <form action="{{ route('checkout.store') }}" method="POST">
+        <form action="{{ route('payment.show') }}" method="GET">
     @csrf
-    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Passer la Commande</button>
+    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mt-4">
+        Passer au Paiement
+    </button>
 </form>
+
 
         </div>
     </div>

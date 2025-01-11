@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
@@ -6,6 +7,7 @@ use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 // Route pour la page d'accueil (redirige vers /home)
@@ -100,6 +102,14 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.show');
 
 
+// Route pour le paiement
+Route::middleware('auth')->group(function () {
+    // Afficher la page de paiement
+    Route::get('/payment', [PaymentController::class, 'show'])->name('payment.show');
+
+    // Traiter le paiement
+    Route::post('/payment', [PaymentController::class, 'process'])->name('payment.process');
+});
 
 // Routes d'authentification (incluses par Laravel Breeze ou autre package)
 require __DIR__ . '/auth.php';
