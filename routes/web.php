@@ -103,12 +103,11 @@ Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.
 
 
 // Route pour le paiement
-Route::middleware('auth')->group(function () {
-    // Afficher la page de paiement
-    Route::get('/payment', [PaymentController::class, 'show'])->name('payment.show');
+Route::get('/payment', [PaymentController::class, 'show'])->name('payment.show');
+Route::post('/payment/process', [PaymentController::class, 'process']);
 
-    // Traiter le paiement
-    Route::post('/payment', [PaymentController::class, 'process'])->name('payment.process');
+Route::get('/confirmation', function () {
+    return view('payment.confirmation'); // Spécifier le dossier "payment"
 });
 
 // Routes d'authentification (incluses par Laravel Breeze ou autre package)

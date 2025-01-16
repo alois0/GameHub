@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,4 +54,8 @@ class OrderController extends Controller
     // Passer les données à la vue
     return view('orders.show', compact('order'));
 }
+
+
+
+
 }

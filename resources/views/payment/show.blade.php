@@ -3,88 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- Pour sécuriser les requêtes AJAX -->
     <title>Paiement - GameHub</title>
     <script src="https://js.stripe.com/v3/"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <!-- Navigation -->
-    <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
-        <div class="text-xl font-bold">
-            <a href="/" class="hover:text-green-500">GameHub</a>
-        </div>
-        <ul class="flex gap-4">
-            @auth
-                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a></li>
-                <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
-                <li>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="hover:text-green-500">Logout</button>
-                    </form>
-                </li>
-            @else
-                <li><a href="{{ route('login') }}" class="hover:text-green-500">Login</a></li>
-                <li><a href="{{ route('register') }}" class="hover:text-green-500">Register</a></li>
-            @endauth
-        </ul>
-    </nav>
-
-    <!-- Formulaire de paiement -->
     <div class="container mx-auto mt-8 p-6 max-w-lg bg-white shadow-lg rounded-lg">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Détails du Paiement</h1>
 
-        <!-- Affichage du total du panier -->
-        <div class="bg-gray-100 shadow-md rounded-lg p-4">
+        <div class="bg-gray-100 shadow-md rounded-lg p-4 mb-6">
             <h2 class="text-xl font-semibold text-gray-800">Total à Payer : {{ number_format($totalPrice, 2) }} €</h2>
         </div>
 
-        <form action="{{ route('payment.process') }}" method="POST" id="payment-form" class="mt-6">
+        <!-- Formulaire de paiement Stripe -->
+        <form id="payment-form">
             @csrf
-            <div id="card-element" class="my-4">
-                <!-- Le champ de carte de crédit sera inséré ici par Stripe -->
-            </div>
+            <div id="card-element" class="my-4"></div> <!-- Champ de carte Stripe -->
 
             <div id="card-errors" role="alert" class="text-red-500 mb-4"></div>
 
-            <button id="submit" class="w-full py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all">
-                Payer
+            <button id="submit" type="button" class="w-full py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all">
+                Payer et Valider la Commande
             </button>
         </form>
     </div>
 
-<script>
-    // Créer une instance Stripe
-    var stripe = Stripe('{{ $stripePublicKey }}'); // Utilisation de la clé publique Stripe passée depuis le contrôleur
-    var elements = stripe.elements();
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var stripe = Stripe('{{ $stripePublicKey }}'); // Clé publique Stripe
+            var elements = stripe.elements();
+            var card = elements.create('card'); // Champ de carte Stripe
+            card.mount('#card-element'); // Attacher le champ à l'élément HTML
 
-    // Créer un élément de carte
-    var card = elements.create('card');
-    card.mount('#card-element');
+            // Gestion du clic sur le bouton de paiement
+            document.getElementById('submit').addEventListener('click', function(event) {
+                event.preventDefault();
 
-    // Gérer la soumission du formulaire
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
+                var clientSecret = '{{ $clientSecret }}'; // Transmis depuis le backend
 
-        stripe.confirmCardPayment('{{ $clientSecret }}', {
-            payment_method: {
-                card: card,
-            },
-        }).then(function(result) {
-            if (result.error) {
-                // Afficher une erreur à l'utilisateur
-                var errorElement = document.getElementById('card-errors');
-                errorElement.textContent = result.error.message;
-            } else {
-                if (result.paymentIntent.status === 'succeeded') {
-                    // Le paiement a réussi
-                    alert('Paiement réussi');
-                }
-            }
+                stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: {
+                            name: 'Nom du Client', // Vous pouvez le récupérer dynamiquement si nécessaire
+                        }
+                    },
+                }).then(function(result) {
+                    if (result.error) {
+                        // Affiche les erreurs dans l'interface utilisateur
+                        document.getElementById('card-errors').textContent = result.error.message;
+                    } else {
+                        // Paiement réussi, informer le backend
+                        fetch('/payment/process', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+    },
+    body: JSON.stringify({
+        paymentIntentId: result.paymentIntent.id, // ID du PaymentIntent
+    }),
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        window.location.href = '/confirmation';
+    } else {
+        alert(data.message);
+    }
+})
+.catch(error => console.error('Erreur de communication avec le backend', error));
+
+                    }
+                });
+            });
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>
