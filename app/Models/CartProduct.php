@@ -15,7 +15,8 @@ class CartProduct extends Pivot
         'cart_id',
         'product_id',
         'quantity',
-        'price',  // Modification ici pour correspondre au nom dans la table
+        'price',
+        'platform_id', 
     ];
 
     /**
@@ -33,4 +34,20 @@ class CartProduct extends Pivot
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+
+    public function platform()
+    {
+        return $this->belongsTo(Platform::class, 'platform_id');
+    }
+    
+    public function getPlatformNameAttribute()
+{
+    return $this->platform_id ? Platform::find($this->platform_id)->name ?? 'Non spécifié' : 'Non spécifié';
+}
+
+    
+
+    
+
 }

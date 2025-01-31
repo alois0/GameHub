@@ -28,9 +28,8 @@ CREATE TABLE categories (
 );
 
 CREATE TABLE platform (
-    platform_id INT AUTO_INCREMENT PRIMARY KEY,
-    platform_code VARCHAR(10) NOT NULL UNIQUE,
-    description TEXT
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL, -- Nom de la plateforme (PS4, Xbox One, etc.)
 );
 
 CREATE TABLE products (
@@ -40,8 +39,10 @@ CREATE TABLE products (
     price DECIMAL(10, 2) NOT NULL,
     stock_quantity INT DEFAULT 0,
     category_id INT,
+    platform_id INT NOT NULL,
     release_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id)
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) on DELETE CASCADE
+    FOREIGN KEY (platform_id) REFERENCES platforms(id) ON DELETE CASCADE
 );
 
 CREATE TABLE product_platform (
@@ -49,8 +50,9 @@ CREATE TABLE product_platform (
     platform_id INT NOT NULL,
     PRIMARY KEY (product_id, platform_id),
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-    FOREIGN KEY (platform_id) REFERENCES platform(platform_id) ON DELETE CASCADE
+    FOREIGN KEY (platform_id) REFERENCES platforms(id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE product_category (
     product_id INT NOT NULL,
@@ -73,10 +75,12 @@ CREATE TABLE order_details (
     order_detail_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
     product_id INT,
+    platform_id INT,
     quantity INT NOT NULL DEFAULT 1,
     price_each DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (platform_id) REFERENCES platform(id) ON DELETE CASCADE -- Relation avec la table `platform`
 );
 
 CREATE TABLE product_reviews (

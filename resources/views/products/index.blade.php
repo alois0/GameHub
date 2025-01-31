@@ -40,6 +40,10 @@
                     <p class="text-gray-700">{{ $product->description }}</p>
                     <p class="text-gray-600 font-bold">{{ number_format($product->price, 2) }} €</p>
                     <p class="text-gray-500">Catégorie : {{ $product->category->category_name }}</p> <!-- Afficher la catégorie du produit -->
+                    <!-- Bouton pour accéder à la page détail -->
+        <a href="{{ route('products.show', $product->id) }}" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 inline-block">
+            Voir le produit
+        </a>
                     <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST">
                         @csrf
                         <button type="submit" class="mt-2 px-4 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600">Ajouter au panier</button>

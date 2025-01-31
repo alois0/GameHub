@@ -31,5 +31,8 @@ class Order extends Model
 {
     return $this->hasMany(OrderDetail::class);
 }
+
+
+
 }
 

@@ -25,9 +25,10 @@ class Cart extends Model
      * Relation : Récupérer les produits dans le panier (via la table pivot cart_product).
      */
     public function products()
-    {
-        return $this->belongsToMany(Product::class, 'cart_products') // Vérifie le nom exact de la table pivot
-            ->withPivot('quantity', 'price')  // Utilise le nom des colonnes correctes pour la quantité et le prix
-            ->withTimestamps();  // Enregistrer les timestamps pour chaque produit dans le panier
-    }
+{
+    return $this->belongsToMany(Product::class, 'cart_products')
+                ->withPivot('quantity', 'price', 'platform_id')
+                ->withTimestamps();
+}
+
 }

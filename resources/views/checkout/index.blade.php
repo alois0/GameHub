@@ -33,52 +33,62 @@
     <div class="container mx-auto mt-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Résumé du Panier</h1>
 
-        <!-- Affichage du panier -->
-        <div class="bg-white shadow-lg rounded-lg p-4">
-            <h2 class="text-xl font-semibold text-gray-800">Produits dans votre Panier</h2>
+<!-- Affichage du panier -->
+<div class="bg-white shadow-lg rounded-lg p-4">
+    <h2 class="text-xl font-semibold text-gray-800">Produits dans votre Panier</h2>
 
-            @if($cart->products->count() > 0)
-                <table class="table-auto w-full mt-4">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 text-left">Produit</th>
-                            <th class="px-4 py-2 text-left">Quantité</th>
-                            <th class="px-4 py-2 text-left">Prix</th>
-                            <th class="px-4 py-2 text-left">Sous-total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($cart->products as $product)
-                            <tr class="border-b">
-                                <td class="px-4 py-2">{{ $product->product_name }}</td>
-                                <td class="px-4 py-2">{{ $product->pivot->quantity }}</td>
-                                <td class="px-4 py-2">{{ number_format($product->pivot->price, 2) }} €</td>
-                                <td class="px-4 py-2">{{ number_format($product->pivot->price * $product->pivot->quantity, 2) }} €</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+    @if($cart->products->count() > 0)
+        <table class="table-auto w-full mt-4">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 text-left">Produit</th>
+                    <th class="px-4 py-2 text-left">Plateforme</th>
+                    <th class="px-4 py-2 text-left">Quantité</th>
+                    <th class="px-4 py-2 text-left">Prix</th>
+                    <th class="px-4 py-2 text-left">Sous-total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($cart->products as $product)
+                    <tr class="border-b">
+                        <td class="px-4 py-2">{{ $product->product_name }}</td>
+                        <td class="px-4 py-2">
+                            @php
+                                $platformName = \App\Models\Platform::find($product->pivot->platform_id)->name ?? 'Non spécifié';
+                            @endphp
+                            {{ $platformName }}
+                        </td>
+                        <td class="px-4 py-2">{{ $product->pivot->quantity }}</td>
+                        <td class="px-4 py-2">{{ number_format($product->pivot->price, 2) }} €</td>
+                        <td class="px-4 py-2">{{ number_format($product->pivot->price * $product->pivot->quantity, 2) }} €</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-                <div class="text-right mt-4">
-                    <h3 class="text-xl font-bold text-gray-800">
-                        Total : {{ number_format($cart->products->sum(fn($product) => $product->pivot->price * $product->pivot->quantity), 2) }} €
-                    </h3>
-                </div>
-            @else
-                <p class="text-gray-600">Votre panier est vide.</p>
-            @endif
+        <div class="text-right mt-4">
+            <h3 class="text-xl font-bold text-gray-800">
+                Total : {{ number_format($cart->products->sum(fn($product) => $product->pivot->price * $product->pivot->quantity), 2) }} €
+            </h3>
         </div>
+    @else
+        <p class="text-gray-600">Votre panier est vide.</p>
+    @endif
+</div>
+
+
 
         <!-- Formulaire de commande -->
         <div class="bg-white shadow-lg rounded-lg p-4 mt-6">
             
 
-        <form action="{{ route('payment.show') }}" method="GET">
+        <form action="{{ route('checkout.choose_address') }}" method="GET">
     @csrf
     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mt-4">
-        Passer au Paiement
+        Choisir une Adresse
     </button>
 </form>
+
 
 
         </div>

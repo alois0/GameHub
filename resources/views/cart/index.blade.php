@@ -39,6 +39,7 @@
                     <thead>
                         <tr>
                             <th class="px-4 py-2 text-left">Produit</th>
+                            <th class="px-4 py-2 text-left">Plateforme</th> <!-- Nouvelle colonne pour la plateforme -->
                             <th class="px-4 py-2 text-left">Quantité</th>
                             <th class="px-4 py-2 text-left">Prix Unitaire</th>
                             <th class="px-4 py-2 text-left">Total</th>
@@ -46,19 +47,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($cart->products as $product)
-                            <tr>
-                                <td class="px-4 py-2">{{ $product->product_name }}</td>
-                                <td class="px-4 py-2">{{ $product->pivot->quantity }}</td>
-                                <td class="px-4 py-2">{{ number_format($product->pivot->price, 2) }} €</td>
-                                <td class="px-4 py-2">{{ number_format($product->pivot->price * $product->pivot->quantity, 2) }} €</td>
-                                <td class="px-4 py-2">
-                                    <!-- Bouton pour supprimer le produit du panier -->
-                                    
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+    @foreach($cart->products as $product)
+        <tr>
+            <td class="px-4 py-2">{{ $product->product_name }}</td>
+
+            <td class="px-4 py-2">
+    @php
+        $platformName = \App\Models\Platform::find($product->pivot->platform_id)->name ?? 'Non spécifié';
+    @endphp
+    {{ $platformName }}
+</td>
+
+            <td class="px-4 py-2">{{ $product->pivot->quantity }}</td>
+            <td class="px-4 py-2">{{ number_format($product->pivot->price, 2) }} €</td>
+            <td class="px-4 py-2">{{ number_format($product->pivot->price * $product->pivot->quantity, 2) }} €</td>
+            <td class="px-4 py-2">
+                <form action="{{ route('cart.remove', ['productId' => $product->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                        Retirer
+                    </button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
+
                 </table>
 
                 <!-- Affichage du total -->
@@ -82,9 +97,11 @@
             <p class="text-center text-gray-700">Votre panier est vide.</p>
         @endif
     </div>
-    <!-- Bouton vers le Checkout -->
-<div class="mt-4 text-center">
-    <a href="{{ route('checkout') }}" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Passer à la caisse</a>
-</div>
+
+    <!-- Boutons pour continuer -->
+    <div class="mt-4 text-center">
+        <a href="{{ route('checkout') }}" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Passer à la caisse</a>
+        <a href="{{ route('products.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Retourner aux Produits</a>
+    </div>
 </body>
 </html>

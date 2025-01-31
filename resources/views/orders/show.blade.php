@@ -29,35 +29,55 @@
         </ul>
     </nav>
 
-    <!-- Détails de la Commande -->
-    <div class="container mx-auto mt-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Détails de la Commande #{{ $order->order_id }}</h1>
+<!-- Détails de la Commande -->
+<div class="container mx-auto mt-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Détails de la Commande #{{ $order->id }}</h1>
 
-        <p class="text-gray-600">Date : {{ $order->order_date }}</p>
-        <p class="text-gray-600">Statut : {{ $order->status }}</p>
-        <p class="text-gray-600 font-bold">Total : {{ number_format($order->total_price, 2) }} €</p>
+    <p class="text-gray-600">Date : {{ $order->order_date }}</p>
+    <p class="text-gray-600">Statut : {{ $order->status }}</p>
+    <p class="text-gray-600 font-bold">Total : {{ number_format($order->total_price, 2) }} €</p>
 
-        <h4 class="mt-4 font-semibold">Détails des Produits :</h4>
-        <table class="min-w-full table-auto mt-2">
-            <thead>
+
+    @if($order->orderDetails->first() && $order->orderDetails->first()->address)
+        <p class="text-gray-600 font-semibold mt-4">
+            Adresse de Facturation : 
+            {{ $order->orderDetails->first()->address->street_number }}
+            {{ $order->orderDetails->first()->address->street_name }},
+            {{ $order->orderDetails->first()->address->city }},
+            {{ $order->orderDetails->first()->address->postal_code }}
+        </p>
+    @endif
+
+    <h4 class="mt-4 font-semibold">Détails des Produits :</h4>
+    <table class="min-w-full table-auto mt-2">
+        <thead>
+            <tr>
+                <th class="px-4 py-2 text-left">Produit</th>
+                <th class="px-4 py-2 text-left">Plateforme</th>
+                <th class="px-4 py-2 text-left">Quantité</th>
+                <th class="px-4 py-2 text-left">Prix Unitaire</th>
+                <th class="px-4 py-2 text-left">Sous-total</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($order->orderDetails as $orderDetail)
                 <tr>
-                    <th class="px-4 py-2 text-left">Produit</th>
-                    <th class="px-4 py-2 text-left">Quantité</th>
-                    <th class="px-4 py-2 text-left">Prix Unitaire</th>
-                    <th class="px-4 py-2 text-left">Sous-total</th>
+                    <td class="px-4 py-2">{{ $orderDetail->product->product_name }}</td>
+                    <td class="px-4 py-2">
+                        @php
+                            $platformName = \App\Models\Platform::find($orderDetail->platform_id)->name ?? 'Non spécifié';
+                        @endphp
+                        {{ $platformName }}
+                    </td>
+                    <td class="px-4 py-2">{{ $orderDetail->quantity }}</td>
+                    <td class="px-4 py-2">{{ number_format($orderDetail->price_each, 2) }} €</td>
+                    <td class="px-4 py-2">{{ number_format($orderDetail->price_each * $orderDetail->quantity, 2) }} €</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($order->orderDetails as $orderDetail)
-                    <tr>
-                        <td class="px-4 py-2">{{ $orderDetail->product->product_name }}</td>
-                        <td class="px-4 py-2">{{ $orderDetail->quantity }}</td>
-                        <td class="px-4 py-2">{{ number_format($orderDetail->price_each, 2) }} €</td>
-                        <td class="px-4 py-2">{{ number_format($orderDetail->price_each * $orderDetail->quantity, 2) }} €</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>

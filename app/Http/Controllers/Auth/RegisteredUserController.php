@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User; // Utilisation uniquement du modèle User
+use App\Models\Address;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,9 +41,10 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'ville' => ['required', 'string', 'max:255'],
-            'rue' => ['required', 'string', 'max:255'],
-            'codepostal' => ['required', 'string', 'max:5'],
+            'street_number' => 'required|string|max:10',
+            'street_name' => 'required|string|max:255',
+            'city' => 'required|string|max:100',
+            'postal_code' => 'required|numeric|digits:5',
             'phone' => ['nullable', 'array'],
             'phone.*' => ['nullable', 'string', 'max:15', 'unique:phone,tel'],
         ]);
@@ -52,10 +54,19 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'ville' => $request->ville,
-            'rue' => $request->rue,
-            'codepostal' => $request->codepostal,
+
         ]);
+
+        // Création de l'adresse
+        $address = Address::create([
+        'street_number' => $request->street_number,
+        'street_name' => $request->street_name,
+        'city' => $request->city,
+        'postal_code' => $request->postal_code,
+    ]);
+
+    // Associer l'utilisateur à l'adresse via la table pivot avec "is_default"
+    $user->addresses()->attach($address->id, ['is_default' => true]);
     
         // Ajout des téléphones
         if ($request->has('phone')) {

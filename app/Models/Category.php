@@ -11,7 +11,8 @@ class Category extends Model
 
     protected $table = 'categories'; // Nom de la table
     protected $primaryKey = 'category_id'; // Clé primaire personnalisée
-
+    
+    public $timestamps = false;
     // Attributs assignables
     protected $fillable = [
         'category_name',

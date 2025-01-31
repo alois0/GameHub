@@ -66,6 +66,16 @@ class PaymentController extends Controller
                 return response()->json(['success' => false, 'message' => 'Erreur : Aucun panier trouvé.']);
             }
 
+            $addressId = session('checkout_address_id');
+
+            if (!$addressId) {
+                Log::error('Aucune adresse enregistrée en session.');
+                return response()->json(['success' => false, 'message' => 'Erreur : Aucune adresse sélectionnée.']);
+            }
+            
+            Log::info('Adresse récupérée pour la commande : ' . $addressId);
+            
+
             // Calculer le total du panier
             $totalPrice = $cart->products->sum(function ($product) {
                 return $product->pivot->price * $product->pivot->quantity;
@@ -86,8 +96,11 @@ class PaymentController extends Controller
             foreach ($cart->products as $product) {
                 $order->orderDetails()->create([
                     'product_id' => $product->id,
+                    'platform_id' => $product->pivot->platform_id, // Ajouter la plateform
                     'quantity' => $product->pivot->quantity,
                     'price_each' => $product->pivot->price,
+                    'address_id' => $addressId, // Associer l'adresse ici
+
                 ]);
             }
 
@@ -96,6 +109,9 @@ class PaymentController extends Controller
             // Vider le panier
             $cart->products()->detach();
             Log::info('Panier vidé pour l\'utilisateur ID : ' . $user->id);
+
+            // Supprimer l'adresse de la session après utilisation
+            session()->forget('checkout_address_id');
 
             return response()->json(['success' => true, 'message' => 'Commande créée avec succès.']);
         } else {

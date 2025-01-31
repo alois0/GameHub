@@ -39,24 +39,32 @@
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
     </div>
 
-    <!-- Adresse -->
-    <div class="mb-4">
-        <label for="ville" class="block text-sm font-medium text-gray-700">Ville</label>
-        <input type="text" name="ville" id="ville" value="{{ old('ville') }}" required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-    </div>
+                <!-- Adresse -->
+                <h2 class="text-lg font-medium mb-4">Adresse par défaut</h2>
 
-    <div class="mb-4">
-        <label for="rue" class="block text-sm font-medium text-gray-700">Rue</label>
-        <input type="text" name="rue" id="rue" value="{{ old('rue') }}" required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-    </div>
+                <div class="mb-4">
+                    <label for="street_number" class="block text-sm font-medium text-gray-700">Numéro de rue</label>
+                    <input type="text" name="street_number" id="street_number" value="{{ old('street_number') }}" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
 
-    <div class="mb-4">
-        <label for="codepostal" class="block text-sm font-medium text-gray-700">Code Postal</label>
-        <input type="text" name="codepostal" id="codepostal" value="{{ old('codepostal') }}" required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-    </div>
+                <div class="mb-4">
+                    <label for="street_name" class="block text-sm font-medium text-gray-700">Rue</label>
+                    <input type="text" name="street_name" id="street_name" value="{{ old('street_name') }}" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="mb-4">
+                    <label for="city" class="block text-sm font-medium text-gray-700">Ville</label>
+                    <input type="text" name="city" id="city" value="{{ old('city') }}" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="mb-4">
+                    <label for="postal_code" class="block text-sm font-medium text-gray-700">Code Postal</label>
+                    <input type="text" name="postal_code" id="postal_code" value="{{ old('postal_code') }}" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
 
     <!-- Téléphones -->
     <h2 class="text-lg font-medium mb-4">Téléphones</h2>

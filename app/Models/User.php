@@ -59,4 +59,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class, 'user_id');
+    }
+
+    public function addresses()
+    {
+        return $this->belongsToMany(Address::class, 'address_user')
+                    ->withPivot('is_default');
+
+    }
+    
+
+
 }
