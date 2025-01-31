@@ -5,14 +5,25 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
-    ville VARCHAR(100),
     payment VARCHAR(100),
     user_role VARCHAR(10) DEFAULT 'user',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    codepostal INT(5) NOT NULL,
-    rue VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE addresses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    street_number VARCHAR(255) NOT NULL,
+    street_name VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    postal_code INT NOT NULL,
+)
+
+CREATE TABLE addresses_user(
+    user_id INT,
+    address_id INT,
+
+)
 
 CREATE TABLE Phone (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -78,9 +89,11 @@ CREATE TABLE order_details (
     platform_id INT,
     quantity INT NOT NULL DEFAULT 1,
     price_each DECIMAL(10, 2) NOT NULL,
+    address_id INT,
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-    FOREIGN KEY (platform_id) REFERENCES platform(id) ON DELETE CASCADE -- Relation avec la table `platform`
+    FOREIGN KEY (platform_id) REFERENCES platform(id) ON DELETE CASCADE, -- Relation avec la table `platform`
+    FOREIGN KEY (address_id) REFERENCES addresses(id) ON DELETE CASCADE
 );
 
 CREATE TABLE product_reviews (
