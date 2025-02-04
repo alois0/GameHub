@@ -14,17 +14,17 @@ class Product extends Model
         'description',
         'price',
         'stock_quantity',
-        'category_id',
         'release_date',
     ];
 
     /**
      * Relation : Un produit appartient à une catégorie.
      */
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id');  // Spécifier explicitement la clé étrangère si nécessaire
-    }
+    public function categories()
+{
+    return $this->belongsToMany(Category::class, 'product_category', 'product_id', 'category_id');
+}
+
 
     /**
      * Relation : Un produit peut être dans plusieurs paniers.

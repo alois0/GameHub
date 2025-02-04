@@ -13,7 +13,7 @@ class Platform extends Model
      * Nom explicite de la table.
      */
     protected $table = 'platform'; // Préciser que le nom de la table est 'platform'
-
+    
     /**
      * Attributs modifiables en masse.
      */

@@ -17,19 +17,20 @@
                 <li><li><a href="{{ route('products.index') }}" class="hover:text-green-500">Produits</a></li> <!-- Lien ajouté pour produits -->
                 <a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a>
                 <a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a>
+                <li><a href="{{ route('orders.index') }}" class="hover:text-green-500">Commandes</a></li>
                 </li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="hover:text-green-500">Logout</button>
+                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
                     </form>
                 </li>
             @else
                 <li>
-                    <a href="{{ route('login') }}" class="hover:text-green-500">Login</a>
+                    <a href="{{ route('login') }}" class="hover:text-green-500">Se connecter</a>
                 </li>
                 <li>
-                    <a href="{{ route('register') }}" class="hover:text-green-500">Register</a>
+                    <a href="{{ route('register') }}" class="hover:text-green-500">Créer un compte</a>
                 </li>
             @endauth
         </ul>

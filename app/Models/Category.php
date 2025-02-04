@@ -22,7 +22,7 @@ class Category extends Model
     // Relation : Une catégorie peut avoir plusieurs produits
     public function products()
     {
-        return $this->hasMany(Product::class, 'category_id');
+        return $this->belongsToMany(Product::class, 'product_category', 'category_id', 'product_id');
     }
 }
 

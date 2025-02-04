@@ -161,7 +161,9 @@ Route::middleware(['auth'])->group(function () {
     //route pour les produit 
 
     Route::resource('products', ProductController::class);
-
+    Route::middleware(['auth'])->group(function () {
+        Route::resource('admin/products', ProductController::class);
+    });
 
 
     //route pour les plateformes
@@ -182,6 +184,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
 });
+
+
+ 
 // Routes d'authentification (incluses par Laravel Breeze ou autre package)
 require __DIR__ . '/auth.php';
 

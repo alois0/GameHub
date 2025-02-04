@@ -14,17 +14,18 @@
         </div>
         <ul class="flex gap-4">
             @auth
-                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a></li>
+                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profil</a></li>
                 <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
+                <li><a href="{{ route('orders.index') }}" class="hover:text-green-500">Commandes</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="hover:text-green-500">Logout</button>
+                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
                     </form>
                 </li>
             @else
-                <li><a href="{{ route('login') }}" class="hover:text-green-500">Login</a></li>
-                <li><a href="{{ route('register') }}" class="hover:text-green-500">Register</a></li>
+                <li><a href="{{ route('login') }}" class="hover:text-green-500">Connexion</a></li>
+                <li><a href="{{ route('register') }}" class="hover:text-green-500">Inscription</a></li>
             @endauth
         </ul>
     </nav>
@@ -39,15 +40,25 @@
                     <h3 class="font-semibold text-xl">{{ $product->product_name }}</h3>
                     <p class="text-gray-700">{{ $product->description }}</p>
                     <p class="text-gray-600 font-bold">{{ number_format($product->price, 2) }} €</p>
-                    <p class="text-gray-500">Catégorie : {{ $product->category->category_name }}</p> <!-- Afficher la catégorie du produit -->
+
+                    <!-- Affichage des catégories -->
+                    <p class="text-gray-500">
+                        Catégories :
+                        {{ $product->categories->pluck('category_name')->join(', ') }}
+                    </p>
+
+                    <!-- Affichage des plateformes -->
+                    <p class="text-gray-500">
+                        Plateformes :
+                        {{ $product->platforms->pluck('name')->join(', ') }}
+                    </p>
+
                     <!-- Bouton pour accéder à la page détail -->
-        <a href="{{ route('products.show', $product->id) }}" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 inline-block">
-            Voir le produit
-        </a>
-                    <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="mt-2 px-4 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600">Ajouter au panier</button>
-                    </form>
+                    <a href="{{ route('products.show', $product->id) }}" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 inline-block">
+                        Voir le produit
+                    </a>
+
+                    
                 </div>
             @endforeach
         </div>

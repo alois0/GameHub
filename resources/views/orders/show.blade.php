@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
+    
     <!-- Navigation -->
     <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
         <div class="text-xl font-bold">
@@ -14,61 +15,79 @@
         </div>
         <ul class="flex gap-4">
             @auth
-                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a></li>
+                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profil</a></li>
                 <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="hover:text-green-500">Logout</button>
+                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
                     </form>
                 </li>
             @else
-                <li><a href="{{ route('login') }}" class="hover:text-green-500">Login</a></li>
-                <li><a href="{{ route('register') }}" class="hover:text-green-500">Register</a></li>
+                <li><a href="{{ route('login') }}" class="hover:text-green-500">Connexion</a></li>
             @endauth
         </ul>
     </nav>
 
-<!-- Détails de la Commande -->
-<div class="container mx-auto mt-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Détails de la Commande #{{ $order->id }}</h1>
+    <!-- Définition des couleurs pour le statut -->
+    @php
+        $statusColors = [
+            'Pending' => 'bg-yellow-200 text-yellow-800',
+            'Processing' => 'bg-blue-200 text-blue-800',
+            'Shipped' => 'bg-indigo-200 text-indigo-800',
+            'Delivered' => 'bg-green-200 text-green-800',
+            'Canceled' => 'bg-red-200 text-red-800'
+        ];
+    @endphp
 
-    <p class="text-gray-600">Date : {{ $order->order_date }}</p>
-    <p class="text-gray-600">Statut : {{ $order->status }}</p>
-    <p class="text-gray-600 font-bold">Total : {{ number_format($order->total_price, 2) }} €</p>
+    <!-- Détails de la Commande -->
+    <div class="container mx-auto mt-8 p-6 max-w-4xl bg-white shadow-lg rounded-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Commande #{{ $order->id }}</h1>
 
-
-    @if($order->orderDetails->first() && $order->orderDetails->first()->address)
-        <p class="text-gray-600 font-semibold mt-4">
-            Adresse de Facturation : 
-            {{ $order->orderDetails->first()->address->street_number }}
-            {{ $order->orderDetails->first()->address->street_name }},
-            {{ $order->orderDetails->first()->address->city }},
-            {{ $order->orderDetails->first()->address->postal_code }}
+        <p class="text-gray-600"><strong>Date :</strong> {{ $order->order_date }}</p>
+        
+        <!-- Affichage du statut avec badge coloré -->
+        <p class="text-gray-600">
+            <strong>Statut :</strong> 
+            <span class="px-3 py-1 rounded-full text-sm font-semibold {{ $statusColors[$order->status] ?? 'bg-gray-200 text-gray-800' }}">
+                {{ ucfirst($order->status) }}
+            </span>
         </p>
-    @endif
 
-    <h4 class="mt-4 font-semibold">Détails des Produits :</h4>
-    <table class="min-w-full table-auto mt-2">
+        <p class="text-gray-800 font-bold text-lg mt-2"><strong>Total :</strong> {{ number_format($order->total_price, 2) }} €</p>
+
+        <!-- Adresse de facturation -->
+        @if($order->orderDetails->first() && $order->orderDetails->first()->address)
+            <div class="mt-4 bg-gray-100 p-4 rounded-lg">
+                <p class="text-gray-700 font-semibold">Adresse de facturation :</p>
+                <p class="text-gray-600">
+                    {{ $order->orderDetails->first()->address->street_number }} 
+                    {{ $order->orderDetails->first()->address->street_name }},
+                    {{ $order->orderDetails->first()->address->city }},
+                    {{ $order->orderDetails->first()->address->postal_code }}
+                </p>
+            </div>
+        @endif
+
+        <!-- Détails des produits -->
+<h2 class="text-xl font-semibold mt-6">Produits commandés :</h2>
+<div class="overflow-x-auto mt-4">
+    <table class="min-w-full bg-white border rounded-lg shadow-md">
         <thead>
-            <tr>
+            <tr class="bg-gray-200">
                 <th class="px-4 py-2 text-left">Produit</th>
                 <th class="px-4 py-2 text-left">Plateforme</th>
                 <th class="px-4 py-2 text-left">Quantité</th>
                 <th class="px-4 py-2 text-left">Prix Unitaire</th>
                 <th class="px-4 py-2 text-left">Sous-total</th>
-                
             </tr>
         </thead>
         <tbody>
             @foreach($order->orderDetails as $orderDetail)
-                <tr>
+                <tr class="border-b">
                     <td class="px-4 py-2">{{ $orderDetail->product->product_name }}</td>
                     <td class="px-4 py-2">
-                        @php
-                            $platformName = \App\Models\Platform::find($orderDetail->platform_id)->name ?? 'Non spécifié';
-                        @endphp
-                        {{ $platformName }}
+                        {{ optional($orderDetail->platform)->name ?? 'Non spécifié' }}
                     </td>
                     <td class="px-4 py-2">{{ $orderDetail->quantity }}</td>
                     <td class="px-4 py-2">{{ number_format($orderDetail->price_each, 2) }} €</td>
@@ -78,6 +97,7 @@
         </tbody>
     </table>
 </div>
+
 
 </body>
 </html>

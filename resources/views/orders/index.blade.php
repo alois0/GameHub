@@ -14,37 +14,58 @@
         </div>
         <ul class="flex gap-4">
             @auth
-                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a></li>
+                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profil</a></li>
                 <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
+                <li><a href="{{ route('orders.index') }}" class="hover:text-green-500">Commandes</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="hover:text-green-500">Logout</button>
+                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
                     </form>
                 </li>
             @else
-                <li><a href="{{ route('login') }}" class="hover:text-green-500">Login</a></li>
-                <li><a href="{{ route('register') }}" class="hover:text-green-500">Register</a></li>
+                <li><a href="{{ route('login') }}" class="hover:text-green-500">Connexion</a></li>
+                <li><a href="{{ route('register') }}" class="hover:text-green-500">Inscription</a></li>
             @endauth
         </ul>
     </nav>
 
     <!-- Mes Commandes -->
     <div class="container mx-auto mt-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Mes Commandes</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Mes Commandes</h1>
 
-        @foreach($orders as $order)
-            <div class="bg-white shadow-lg rounded-lg p-4 mb-4">
-                <h3 class="font-semibold text-xl">Commande #{{ $order->id }}</h3>
-                <p class="text-gray-600">Date : {{ $order->order_date }}</p>
-                <p class="text-gray-600">Statut : {{ $order->status }}</p>
-                <p class="text-gray-600 font-bold">Total : {{ number_format($order->total_price, 2) }} €</p>
+        @if($orders->count() > 0)
+            @foreach($orders as $order)
+                <div class="bg-white shadow-lg rounded-lg p-6 mb-4">
+                    <h3 class="font-semibold text-xl">Commande #{{ $order->id }}</h3>
+                    <p class="text-gray-600">Date : {{ \Carbon\Carbon::parse($order->order_date)->format('d/m/Y H:i') }}</p>
 
-                <div class="mt-4">
-    <a href="{{ route('orders.show', $order->id) }}" class="text-blue-500 hover:text-blue-700">Voir les détails</a>
-</div>
-            </div>
-        @endforeach
+                    <!-- Affichage du statut avec des couleurs -->
+                    @php
+                        $statusColors = [
+                            'Pending' => 'bg-yellow-200 text-yellow-800',
+                            'Processing' => 'bg-blue-200 text-blue-800',
+                            'Shipped' => 'bg-indigo-200 text-indigo-800',
+                            'Delivered' => 'bg-green-200 text-green-800',
+                            'Canceled' => 'bg-red-200 text-red-800'
+                        ];
+                    @endphp
+                    <p class="inline-block px-3 py-1 rounded-lg font-semibold {{ $statusColors[$order->status] ?? 'bg-gray-200 text-gray-800' }}">
+                        {{ ucfirst($order->status) }}
+                    </p>
+
+                    <p class="text-gray-600 font-bold">Total : {{ number_format($order->total_price, 2) }} €</p>
+
+                    <div class="mt-4">
+                        <a href="{{ route('orders.show', $order->id) }}" class="text-blue-500 hover:text-blue-700 font-semibold">
+                            Voir les détails
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        @else
+            <p class="text-center text-gray-600 mt-6">Vous n'avez passé aucune commande.</p>
+        @endif
     </div>
 </body>
 </html>

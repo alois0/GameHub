@@ -33,17 +33,18 @@
         </div>
         <ul class="flex gap-4">
             @auth
-                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a></li>
+                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profil</a></li>
                 <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
+                <li><a href="{{ route('orders.index') }}" class="hover:text-green-500">Commandes</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="hover:text-green-500">Logout</button>
+                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
                     </form>
                 </li>
             @else
-                <li><a href="{{ route('login') }}" class="hover:text-green-500">Login</a></li>
-                <li><a href="{{ route('register') }}" class="hover:text-green-500">Register</a></li>
+                <li><a href="{{ route('login') }}" class="hover:text-green-500">Connexion</a></li>
+                <li><a href="{{ route('register') }}" class="hover:text-green-500">Inscription</a></li>
             @endauth
         </ul>
     </nav>
@@ -54,31 +55,37 @@
             <h3 class="font-semibold text-xl">{{ $product->product_name }}</h3>
             <p class="text-gray-700">{{ $product->description }}</p>
             <p class="text-gray-600 font-bold">{{ number_format($product->price, 2) }} €</p>
-            <p class="text-gray-500">Catégorie : {{ $product->category->category_name }}</p>
-            <p>Disponible sur :</p>
-<ul>
-    @foreach($product->platforms as $platform)
-        <li>{{ $platform->name }}</li>
-    @endforeach
-</ul>
-       
 
-<form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST">
-    @csrf
-    <div class="mb-4">
-        <label for="platform" class="block font-semibold">Choisissez votre plateforme</label>
-        <select name="platform" id="platform" class="border rounded w-full px-4 py-2" required>
-            @foreach($product->platforms as $platform)
-                <option value="{{ $platform->id }}">{{ $platform->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    <button type="submit" class="mt-2 px-4 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600">
-        Ajouter au panier
-    </button>
-</form>
+            <!-- Correction de l'affichage des catégories -->
+            <p class="text-gray-500">
+                Catégories :
+                {{ $product->categories->pluck('category_name')->join(', ') }}
+            </p>
 
+            <!-- Liste des plateformes -->
+            <p class="text-gray-500">Disponible sur :</p>
+            <ul class="list-disc pl-5">
+                @foreach($product->platforms as $platform)
+                    <li>{{ $platform->name }}</li>
+                @endforeach
+            </ul>
 
+            <!-- Formulaire pour choisir une plateforme et ajouter au panier -->
+            <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="platform" class="block font-semibold">Choisissez votre plateforme</label>
+                    <select name="platform" id="platform" class="border rounded w-full px-4 py-2" required>
+                        @foreach($product->platforms as $platform)
+                            <option value="{{ $platform->id }}">{{ $platform->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="mt-2 px-4 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600">
+                    Ajouter au panier
+                </button>
+            </form>
+        </div>
 
         <!-- Section Avis des clients -->
         <div class="mt-8 bg-white shadow-lg rounded-lg p-6">
@@ -136,13 +143,8 @@
     <script>
         document.getElementById('toggle-reviews').addEventListener('click', function() {
             const reviewsList = document.getElementById('reviews-list');
-            if (reviewsList.classList.contains('hidden')) {
-                reviewsList.classList.remove('hidden');
-                this.textContent = 'Masquer les avis';
-            } else {
-                reviewsList.classList.add('hidden');
-                this.textContent = 'Voir les avis';
-            }
+            reviewsList.classList.toggle('hidden');
+            this.textContent = reviewsList.classList.contains('hidden') ? 'Voir les avis' : 'Masquer les avis';
         });
     </script>
 </body>

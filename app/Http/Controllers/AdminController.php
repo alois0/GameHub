@@ -13,18 +13,20 @@ use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
     public function index()
-    {
-        if (Auth::check()) {
-            $users = User::all();
-            $orders = Order::all();
-            $categories = Category::all();
-            $products = Product::with('category')->get(); // Récupère les produits avec leur catégorie
-            $platforms = Platform::all(); // Récupère les plateformes
-            return view('admin.dashboard', compact('users', 'orders','categories','products','platforms'));
-        } else {
-            return redirect()->route('login');
-        }
+{
+    if (Auth::check()) {
+        $users = User::all();
+        $orders = Order::all();
+        $categories = Category::all();
+        $products = Product::with('categories')->get();
+        $platforms = Platform::all(); 
+
+        return view('admin.dashboard', compact('users', 'orders', 'categories', 'products', 'platforms'));
+    } else {
+        return redirect()->route('login');
     }
+}
+
 
 
 
