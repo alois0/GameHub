@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 04 fév. 2025 à 12:10
+-- Généré le : jeu. 06 fév. 2025 à 15:46
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -211,7 +211,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `total_price`, `order_date`, `status`, `created_at`, `updated_at`) VALUES
-(8, 2, 119.98, '2024-12-31 13:27:24', 'Processing', '2024-12-31 12:27:24', '2025-01-24 12:24:35'),
+(8, 2, 119.98, '2024-12-31 13:27:24', 'Pending', '2024-12-31 12:27:24', '2025-02-06 13:46:23'),
 (9, 2, 59.99, '2024-12-31 14:21:30', 'Processing', '2024-12-31 13:21:30', '2025-01-24 12:01:13'),
 (10, 2, 59.99, '2024-12-31 14:23:01', 'Pending', '2024-12-31 13:23:01', '2024-12-31 13:23:01'),
 (11, 2, 59.99, '2024-12-31 14:35:17', 'Pending', '2024-12-31 13:35:17', '2024-12-31 13:35:17'),
@@ -234,7 +234,15 @@ INSERT INTO `orders` (`id`, `user_id`, `total_price`, `order_date`, `status`, `c
 (28, 4, 59.99, '2025-02-04 10:22:26', 'Delivered', '2025-02-04 09:22:26', '2025-02-04 10:28:51'),
 (29, 4, 119.98, '2025-02-04 10:34:51', 'Pending', '2025-02-04 09:34:51', '2025-02-04 09:34:51'),
 (30, 4, 59.99, '2025-02-04 10:38:18', 'Pending', '2025-02-04 09:38:18', '2025-02-04 09:38:18'),
-(31, 4, 59.99, '2025-02-04 11:58:37', 'Pending', '2025-02-04 10:58:37', '2025-02-04 10:58:37');
+(31, 4, 59.99, '2025-02-04 11:58:37', 'Delivered', '2025-02-04 10:58:37', '2025-02-04 11:13:36'),
+(32, 4, 59.99, '2025-02-04 19:26:39', 'Delivered', '2025-02-04 18:26:39', '2025-02-04 18:27:34'),
+(33, 4, 59.99, '2025-02-06 09:34:32', 'Pending', '2025-02-06 08:34:32', '2025-02-06 08:34:32'),
+(34, 4, 59.99, '2025-02-06 12:17:05', 'Pending', '2025-02-06 11:17:05', '2025-02-06 11:17:05'),
+(35, 4, 239.96, '2025-02-06 12:42:12', 'Pending', '2025-02-06 11:42:12', '2025-02-06 11:42:12'),
+(36, 4, 119.98, '2025-02-06 14:00:36', 'Pending', '2025-02-06 13:00:36', '2025-02-06 13:00:36'),
+(37, 4, 239.96, '2025-02-06 14:03:59', 'Pending', '2025-02-06 13:03:59', '2025-02-06 13:03:59'),
+(38, 4, 59.99, '2025-02-06 14:44:07', 'Pending', '2025-02-06 13:44:07', '2025-02-06 13:44:07'),
+(39, 4, 119.98, '2025-02-06 15:16:20', 'Pending', '2025-02-06 14:16:20', '2025-02-06 14:16:20');
 
 -- --------------------------------------------------------
 
@@ -262,7 +270,16 @@ INSERT INTO `order_details` (`order_detail_id`, `order_id`, `product_id`, `platf
 (26, 28, 3, 4, 1, 59.99, 9, '2025-02-04 09:22:26', '2025-02-04 09:22:26'),
 (27, 29, 3, 4, 2, 59.99, 9, '2025-02-04 09:34:51', '2025-02-04 09:34:51'),
 (28, 30, 3, 4, 1, 59.99, 9, '2025-02-04 09:38:18', '2025-02-04 09:38:18'),
-(29, 31, 3, 4, 1, 59.99, 9, '2025-02-04 10:58:37', '2025-02-04 10:58:37');
+(29, 31, 3, 4, 1, 59.99, 9, '2025-02-04 10:58:37', '2025-02-04 10:58:37'),
+(30, 32, 3, 4, 1, 59.99, 9, '2025-02-04 18:26:39', '2025-02-04 18:26:39'),
+(31, 33, 3, 4, 1, 59.99, 9, '2025-02-06 08:34:33', '2025-02-06 08:34:33'),
+(32, 34, 3, 4, 1, 59.99, 9, '2025-02-06 11:17:05', '2025-02-06 11:17:05'),
+(33, 35, 3, 4, 4, 59.99, 9, '2025-02-06 11:42:12', '2025-02-06 11:42:12'),
+(34, 36, 3, 4, 2, 59.99, 9, '2025-02-06 13:00:36', '2025-02-06 13:00:36'),
+(35, 37, 3, 4, 4, 59.99, 9, '2025-02-06 13:03:59', '2025-02-06 13:03:59'),
+(36, 38, 3, 4, 1, 59.99, 9, '2025-02-06 13:44:07', '2025-02-06 13:44:07'),
+(37, 39, 3, 4, 1, 59.99, 9, '2025-02-06 14:16:20', '2025-02-06 14:16:20'),
+(38, 39, 4, 4, 1, 59.99, 9, '2025-02-06 14:16:20', '2025-02-06 14:16:20');
 
 -- --------------------------------------------------------
 
@@ -323,15 +340,17 @@ CREATE TABLE `products` (
   `description` text DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
   `stock_quantity` int(11) DEFAULT 0,
-  `release_date` datetime DEFAULT current_timestamp()
+  `release_date` datetime DEFAULT current_timestamp(),
+  `image_path` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `products`
 --
 
-INSERT INTO `products` (`id`, `product_name`, `description`, `price`, `stock_quantity`, `release_date`) VALUES
-(3, 'The Legend of Zelda: Breath of the Wild', 'Un jeu d\'aventure épique en monde ouvert', 59.99, 20, '2025-03-01 00:00:00');
+INSERT INTO `products` (`id`, `product_name`, `description`, `price`, `stock_quantity`, `release_date`, `image_path`) VALUES
+(3, 'The Legend of Zelda: Breath of the Wild', 'Un jeu d\'aventure épique en monde ouvert', 59.99, 20, '2025-03-01 00:00:00', 'maxresdefault.jpg'),
+(4, 'The Elder Scrolls V: Skyrim ', 'Explorez un vaste monde rempli de quêtes, de donjons et de créatures fantastiques. ', 59.99, 10, '2025-02-06 15:11:58', 'skyrim.jpg');
 
 -- --------------------------------------------------------
 
@@ -349,7 +368,10 @@ CREATE TABLE `product_category` (
 --
 
 INSERT INTO `product_category` (`product_id`, `category_id`) VALUES
-(3, 2);
+(3, 1),
+(3, 2),
+(4, 1),
+(4, 2);
 
 -- --------------------------------------------------------
 
@@ -367,7 +389,11 @@ CREATE TABLE `product_platform` (
 --
 
 INSERT INTO `product_platform` (`product_id`, `platform_id`) VALUES
-(3, 4);
+(3, 4),
+(4, 1),
+(4, 2),
+(4, 3),
+(4, 4);
 
 -- --------------------------------------------------------
 
@@ -412,7 +438,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('jdHP9Q6AT4hBjL36ven7x99qKlISaN0ZXkfNJ56d', 4, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSmdFWDFrc2JudDMybXRoYTVjSFpqc3N1cTE5TG1EVnhRc2dueWpjZCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hZG1pbi9wcm9kdWN0cy8zIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NDt9', 1738666811);
+('KmPsXLsIr6BXiLavs45XU5CwFWShoqQ31ACnZxPA', 4, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoickdwR2k0SFFJc3d5eFFLNUFWVFpjZjFSWjBFM1BQOU9mMUdIeGR4TCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9wcm9kdWN0cyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQ7fQ==', 1738853075);
 
 -- --------------------------------------------------------
 
@@ -612,7 +638,7 @@ ALTER TABLE `carts`
 -- AUTO_INCREMENT pour la table `cart_products`
 --
 ALTER TABLE `cart_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- AUTO_INCREMENT pour la table `categories`
@@ -630,13 +656,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT pour la table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT pour la table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT pour la table `phone`
@@ -654,7 +680,7 @@ ALTER TABLE `platform`
 -- AUTO_INCREMENT pour la table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `product_reviews`
