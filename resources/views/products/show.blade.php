@@ -51,44 +51,41 @@
 
     <!-- Contenu du produit -->
     <div class="container mx-auto mt-8">
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <h3 class="font-semibold text-xl">{{ $product->product_name }}</h3>
-            <p class="text-gray-700">{{ $product->description }}</p>
-            <p class="text-gray-600 font-bold">{{ number_format($product->price, 2) }} €</p>
-
-            <!-- Correction de l'affichage des catégories -->
-            <p class="text-gray-500">
-                Catégories :
-                {{ $product->categories->pluck('category_name')->join(', ') }}
-            </p>
-
-            <!-- Liste des plateformes -->
-            <p class="text-gray-500">Disponible sur :</p>
-            <ul class="list-disc pl-5">
-                @foreach($product->platforms as $platform)
-                    <li>{{ $platform->name }}</li>
-                @endforeach
-            </ul>
-
-            <!-- Formulaire pour choisir une plateforme et ajouter au panier -->
-            <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label for="platform" class="block font-semibold">Choisissez votre plateforme</label>
-                    <select name="platform" id="platform" class="border rounded w-full px-4 py-2" required>
-                        @foreach($product->platforms as $platform)
-                            <option value="{{ $platform->id }}">{{ $platform->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <button type="submit" class="mt-2 px-4 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600">
-                    Ajouter au panier
-                </button>
-            </form>
+        <h1 class="mb-4 product-details text-3xl font-bold">{{ $product->product_name }}</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                @if($product->image_path)
+                <img src="{{ asset('image/' . $product->image_path) }}" class="img-fluid " alt="{{ $product->product_name }}">
+                @else
+                    <img src="{{ asset('image/default.png' . $product->image_path ) }}" class="img-fluid" alt="Image par défaut">
+                @endauth
+            </div>
+            <div class="product-details">
+                <h2 class="text-2xl font-bold">€{{ number_format($product->price, 2) }}</h2>
+                <p class="text-gray-700">{{ $product->description }}</p>
+                <p class="text-gray-500"><strong>Catégories :</strong> {{ $product->categories->pluck('category_name')->join(', ') }}</p>
+                <p class="text-gray-500"><strong>Plateformes :</strong> {{ $product->platforms->pluck('name')->join(', ') }}</p>
+                <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="platform" class="block font-semibold">Choisissez votre plateforme</label>
+                        <select name="platform" id="platform" class="border rounded w-full px-4 py-2" required>
+                            @foreach($product->platforms as $platform)
+                                <option value="{{ $platform->id }}">{{ $platform->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="mt-2 px-4 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600">
+                        Ajouter au panier
+                    </button>
+                </form>
+            </div>
         </div>
+    </div>
 
-        <!-- Section Avis des clients -->
-        <div class="mt-8 bg-white shadow-lg rounded-lg p-6">
+    <!-- Section Avis des clients -->
+    <div class="container mx-auto mt-8">
+        <div class="bg-white shadow-lg rounded-lg p-6">
             <h2 class="text-2xl font-bold mb-4">Avis des clients</h2>
 
             <!-- Bouton pour afficher/masquer la liste des avis -->

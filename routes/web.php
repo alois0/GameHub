@@ -30,6 +30,17 @@ Route::get('/home', function () {
     return view('home'); // Afficher la vue 'home.blade.php' après connexion
 })->name('home');
 
+// Routes pour les produits (accessible sans authentification)
+Route::resource('products', ProductController::class)
+    ->names([ 
+        'index' => 'products.index', 
+        'create' => 'products.create',
+        'store' => 'products.store',
+        'show' => 'products.show', 
+        'edit' => 'products.edit', 
+        'update' => 'products.update', 
+    ]);
+
 // Groupement des routes nécessitant une authentification
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -160,11 +171,6 @@ Route::middleware(['auth'])->group(function () {
 
 
     //route pour les produit 
-
-    Route::resource('products', ProductController::class);
-    Route::middleware(['auth'])->group(function () {
-        Route::resource('admin/products', ProductController::class);
-    });
 
 
     //route pour les plateformes

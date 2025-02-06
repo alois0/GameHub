@@ -17,11 +17,7 @@ class OrderController extends Controller
 
         
         // Récupérer les commandes de l'utilisateur connecté avec les détails des produits associés
-        $orders = Auth::user()->orders()->with('orderDetails.product')->get();
-
-        // Vérification : afficher les commandes dans la console pour débogage
-          // Retirer ce dd() après avoir vérifié les données
-
+        $orders = Auth::user()->orders()->with('orderDetails.product')->orderBy('order_date', 'desc')->get();
         // Retourner la vue avec les commandes
         return view('orders.index', compact('orders'));
     }
