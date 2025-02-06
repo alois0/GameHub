@@ -56,7 +56,14 @@
                                     {{ $product->platforms->where('id', $product->pivot->platform_id)->first()->name ?? 'Non spécifié' }}
                                 </td>
 
-                                <td class="px-4 py-2">{{ $product->pivot->quantity }}</td>
+                                <td class="px-4 py-2">
+                                <form action="{{ route('cart.update', $product->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="number" name="quantity" value="{{ $product->pivot->quantity }}" min="1" class="w-16 text-center">
+                                    <button type="submit" class="px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600">Modifier</button>
+                                </form>
+                            </td>
                                 <td class="px-4 py-2">{{ number_format($product->pivot->price, 2) }} €</td>
                                 <td class="px-4 py-2">{{ number_format($product->pivot->price * $product->pivot->quantity, 2) }} €</td>
                                 <td class="px-4 py-2">

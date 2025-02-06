@@ -129,4 +129,33 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Panier vidé');
     }
+    
+    /**
+     * Mettre à jour la quantité d'un produit dans le panier.
+     */
+
+    public function update(Request $request, $productId)
+    {
+        // Vérifier si l'utilisateur est connecté
+        if (!Auth::check()) {
+            return redirect()->route('home'); // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté
+        }
+
+        // Récupérer le panier de l'utilisateur
+        $cart = Auth::user()->cart;
+
+        // Valider la quantité
+        $validated = $request->validate([
+            'quantity' => 'required|integer|min:1', // La quantité doit être un entier positif
+        ]);
+        $quantity = $validated['quantity'];
+
+        // Mettre à jour la quantité du produit dans le panier
+        $cart->products()->updateExistingPivot($productId, [
+            'quantity' => $quantity,
+        ]);
+
+        return redirect()->route('cart.index')->with('success', 'Quantité mise à jour');
+    }
+    
 }

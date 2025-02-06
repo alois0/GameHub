@@ -40,7 +40,7 @@
     <div class="min-h-screen flex items-center justify-center bg-gray-800 text-white">
         <div class="text-center px-8">
             <h1 class="text-4xl font-bold mb-4">Bienvenue sur GameHub</h1>
-            <p class="text-lg mb-6">Votre destination ultime pour les tendances de jeux vidéo, catégories et plus encore !</p>
+            <p class="text-lg mb-6">Votre destination ultime pour les tendances de jeux vidéo</p>
         </div>
     </div>
     

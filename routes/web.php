@@ -77,6 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::delete('/remove/{productId}', [CartController::class, 'removeProduct'])->name('cart.remove'); // Supprimer un produit
         Route::delete('/clear', [CartController::class, 'clearCart'])->name('cart.clear'); // Vider le panier
+        Route::patch('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
     });
 
     // Routes pour les catégories
