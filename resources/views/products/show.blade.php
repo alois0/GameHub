@@ -29,7 +29,7 @@
     <!-- Navigation -->
     <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
         <div class="text-xl font-bold">
-            <a href="/" class="hover:text-green-500">GameHub</a>
+        <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('image/LOgo.png') }}" alt="image"></a>
         </div>
         <ul class="flex gap-4">
             @auth

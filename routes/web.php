@@ -197,3 +197,4 @@ Route::middleware(['auth'])->group(function () {
 // Routes d'authentification (incluses par Laravel Breeze ou autre package)
 require __DIR__ . '/auth.php';
 
+Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
