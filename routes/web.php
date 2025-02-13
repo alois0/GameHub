@@ -14,11 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\AddressController;
 
-
-
-
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
 
 // Route pour la page d'accueil (redirige vers /home)
 Route::get('/', function () {
@@ -94,12 +90,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
-
 // Route pour le checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 // Route pour traiter la commande (POST)
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-
 
 Route::middleware(['auth'])->group(function () {
     // Afficher toutes les commandes
@@ -109,9 +103,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/orders/{orderId}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 });
 
-
 Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.show');
-
 
 // Route pour le paiement
 Route::get('/payment', [PaymentController::class, 'show'])->name('payment.show');
@@ -121,34 +113,21 @@ Route::get('/confirmation', function () {
     return view('payment.confirmation'); // Spécifier le dossier "payment"
 });
 
-//route pour le detail du produit
-
+// Route pour le detail du produit
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
-//route pour les reviews 
-
+// Route pour les reviews 
 Route::post('/products/{id}/reviews', [ProductReviewController::class, 'store'])
     ->middleware('auth')
     ->name('reviews.store');
 
-
-
-
-
-
-
-
-
-//route pour l'admin
-
-
+// Route pour l'admin
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/orders/{id}', [AdminController::class, 'showOrder'])->name('admin.orders.show');
     Route::post('/admin/orders/{id}/update-status', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.updateStatus');
     
     // Routes pour les catégories
-
     Route::prefix('admin/categories')->name('admin.categories.')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index'); // Affiche toutes les catégories
         Route::get('/create', [CategoryController::class, 'create'])->name('create'); // Formulaire de création
@@ -158,19 +137,11 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('destroy'); // Supprime une catégorie
     });
 
+    // Routes pour les produits
+    Route::resource('admin/products', ProductController::class);
 
-    //route pour les produit 
-
-    Route::resource('products', ProductController::class);
-    Route::middleware(['auth'])->group(function () {
-        Route::resource('admin/products', ProductController::class);
-    });
-
-
-    //route pour les plateformes
-
-    Route::resource('platforms', PlatformController::class);
-    
+    // Routes pour les plateformes
+    Route::resource('admin/platforms', PlatformController::class);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -178,16 +149,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/checkout/store-address', [CheckoutController::class, 'storeAddress'])->name('checkout.store_address');
 });
 
-
-
-   //route pour l'addresse
-
+// Route pour l'adresse
 Route::middleware(['auth'])->group(function () {
     Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
 });
 
-
- 
 // Routes d'authentification (incluses par Laravel Breeze ou autre package)
 require __DIR__ . '/auth.php';
-

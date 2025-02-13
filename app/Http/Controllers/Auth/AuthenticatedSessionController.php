@@ -21,15 +21,34 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(LoginRequest $request): RedirectResponse
+
+    public function store(Request $request)
     {
-        $request->authenticate();
+        $credentials = $request->only('email', 'password');
 
-        $request->session()->regenerate();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('admin/dashboard');
+            if(Auth::user()->user_role === 'admin') {
+                
+            }
+            
+            return redirect()->intended('/');
+        }
 
-        // Redirection vers la page d'accueil après la connexion
-        return redirect()->intended('/');
+        return back()->withErrors([
+            'email' => "Nous ne reconnaissons pas cet email.",
+        ]);
+        // $request->authenticate();
+
+        // $request->session()->regenerate();
+
+        // // Redirection vers la page d'accueil après la connexion
+        // return redirect()->intended('/');
     }
 
     /**
