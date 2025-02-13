@@ -5,12 +5,16 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
+
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AdminController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\UserController;
+
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\AddressController;
 
@@ -124,24 +128,56 @@ Route::post('/products/{id}/reviews', [ProductReviewController::class, 'store'])
 // Route pour l'admin
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/orders/{id}', [AdminController::class, 'showOrder'])->name('admin.orders.show');
-    Route::post('/admin/orders/{id}/update-status', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.updateStatus');
     
-    // Routes pour les catégories
-    Route::prefix('admin/categories')->name('admin.categories.')->group(function () {
-        Route::get('/', [CategoryController::class, 'index'])->name('index'); // Affiche toutes les catégories
-        Route::get('/create', [CategoryController::class, 'create'])->name('create'); // Formulaire de création
-        Route::post('/', [CategoryController::class, 'store'])->name('store'); // Enregistre une nouvelle catégorie
-        Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('edit'); // Formulaire d'édition
-        Route::put('/{category}', [CategoryController::class, 'update'])->name('update'); // Met à jour une catégorie
-        Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('destroy'); // Supprime une catégorie
-    });
+    Route::resource('admin/orders', AdminOrderController::class)->names([
+        'index' => 'admin.orders.index',
+        'create' => 'admin.orders.create',
+        'store' => 'admin.orders.store',
+        'show' => 'admin.orders.show',
+        'edit' => 'admin.orders.edit',
+        'update' => 'admin.orders.update',
+        'destroy' => 'admin.orders.destroy',
+    ]);
 
-    // Routes pour les produits
-    Route::resource('admin/products', ProductController::class);
+    Route::resource('admin/products', AdminProductController::class)->names([
+        'index' => 'admin.products.index',
+        'create' => 'admin.products.create',
+        'store' => 'admin.products.store',
+        'show' => 'admin.products.show',
+        'edit' => 'admin.products.edit',
+        'update' => 'admin.products.update',
+        'destroy' => 'admin.products.destroy',
+    ]);
 
-    // Routes pour les plateformes
-    Route::resource('admin/platforms', PlatformController::class);
+    Route::resource('admin/categories', CategoryController::class)->names([
+        'index' => 'admin.categories.index',
+        'create' => 'admin.categories.create',
+        'store' => 'admin.categories.store',
+        'show' => 'admin.categories.show',
+        'edit' => 'admin.categories.edit',
+        'update' => 'admin.categories.update',
+        'destroy' => 'admin.categories.destroy',
+    ]);
+
+    Route::resource('admin/platforms', PlatformController::class)->names([
+        'index' => 'admin.platforms.index',
+        'create' => 'admin.platforms.create',
+        'store' => 'admin.platforms.store',
+        'show' => 'admin.platforms.show',
+        'edit' => 'admin.platforms.edit',
+        'update' => 'admin.platforms.update',
+        'destroy' => 'admin.platforms.destroy',
+    ]);
+
+    Route::resource('admin/users', UserController::class)->names([
+        'index' => 'admin.users.index',
+        'create' => 'admin.users.create',
+        'store' => 'admin.users.store',
+        'show' => 'admin.users.show',
+        'edit' => 'admin.users.edit',
+        'update' => 'admin.users.update',
+        'destroy' => 'admin.users.destroy',
+    ]);
 });
 
 Route::middleware(['auth'])->group(function () {
