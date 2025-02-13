@@ -46,6 +46,12 @@
             <!-- Formulaire de paiement Stripe -->
             <form id="payment-form">
                 @csrf
+                <div class="mb-4">
+        <label for="cardholder-name" class="block text-gray-700">Nom du Client</label>
+        <input type="text" id="cardholder-name" name="cardholder-name" class="w-full p-2 border rounded" required>
+    </div>
+
+
                 <div id="card-element" class="my-4 border p-3 rounded bg-gray-50"></div> <!-- Champ de carte Stripe -->
 
                 <div id="card-errors" role="alert" class="text-red-500 mb-4"></div>
@@ -71,6 +77,7 @@
             var submitButton = document.getElementById('submit');
             var submitText = document.getElementById('submit-text');
             var loadingIcon = document.getElementById('loading-icon');
+            var cardholderName = document.getElementById('cardholder-name');
 
             // Gestion du clic sur le bouton de paiement
             submitButton.addEventListener('click', function(event) {
@@ -85,7 +92,7 @@
                     payment_method: {
                         card: card,
                         billing_details: {
-                            name: 'Nom du Client', // Peut être récupéré dynamiquement
+                            name: cardholderName.value, // Peut être récupéré dynamiquement
                         }
                     },
                 }).then(function(result) {
