@@ -11,6 +11,14 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+
+
+
+    public function index()
+    {
+        $latestOrders = Auth::user()->orders()->latest()->take(3)->get(); // Récupère les 3 dernières commandes
+        return view('profile.index', compact('latestOrders')); // Envoie les commandes à la vue
+    }
     /**
      * Display the user's profile form.
      */

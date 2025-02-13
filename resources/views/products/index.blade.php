@@ -26,33 +26,7 @@
 </head>
 <body class="bg-gray-100">
     <!-- Navigation -->
-    <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
-        <div class="flex items-center gap-10">
-            <div class="text-xl font-bold">
-                <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('image/LOgo.png') }}" alt="image"></a>
-            </div>
-            <form class="flex" role="search" action="{{ route('products.search') }}" method="GET">
-                <input class="form-control me-2 px-4 py-2 rounded-l-md text-black" type="search" name="query" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success px-4 py-2 rounded-r-md" type="submit" style="background: linear-gradient(90deg, #289EB6 0%, #248E5E 100%); color: white;">Search</button>
-            </form>
-        </div>
-        <ul class="flex gap-4">
-            @auth
-                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profil</a></li>
-                <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
-                <li><a href="{{ route('orders.index') }}" class="hover:text-green-500">Commandes</a></li>
-                <li>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
-                    </form>
-                </li>
-            @else
-                <li><a href="{{ route('login') }}" class="hover:text-green-500">Connexion</a></li>
-                <li><a href="{{ route('register') }}" class="hover:text-green-500">Inscription</a></li>
-            @endauth
-        </ul>
-    </nav>
+    @include('components.nav')
 
     <!-- Contenu des produits -->
     <div class="container mx-auto mt-8">

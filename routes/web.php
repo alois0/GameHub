@@ -51,7 +51,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Gestion du profil
     Route::prefix('profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
@@ -71,15 +72,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Routes pour les produits
-    Route::resource('products', ProductController::class)
-        ->names([ 
-            'index' => 'products.index', 
-            'create' => 'products.create',
-            'store' => 'products.store',
-            'show' => 'products.show', 
-            'edit' => 'products.edit', 
-            'update' => 'products.update', 
-        ]);
+    
 
     // Routes pour le panier
     Route::prefix('cart')->group(function () {
@@ -104,6 +97,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
+
+Route::resource('products', ProductController::class)
+        ->names([ 
+            'index' => 'products.index', 
+            
+        ]);
+
 
 
 // Route pour le checkout

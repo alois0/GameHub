@@ -1,47 +1,59 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Update Password') }}
-        </h2>
-
+<section class="bg-white shadow-lg rounded-lg p-6">
+    <header class="border-b pb-4 mb-4">
+        <h2 class="text-2xl font-semibold text-gray-800">Mettre à jour le mot de passe</h2>
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            Assurez-vous que votre compte utilise un mot de passe fort et sécurisé.
         </p>
     </header>
 
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('password.update') }}" class="space-y-6">
         @csrf
         @method('put')
 
+        <!-- Mot de passe actuel -->
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+            <label for="current_password" class="block text-gray-700 font-semibold">Mot de passe actuel</label>
+            <input id="current_password" name="current_password" type="password" 
+                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   autocomplete="current-password" required>
+            @error('current_password')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
+        <!-- Nouveau mot de passe -->
         <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+            <label for="password" class="block text-gray-700 font-semibold">Nouveau mot de passe</label>
+            <input id="password" name="password" type="password" 
+                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   autocomplete="new-password" required>
+            @error('password')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
+        <!-- Confirmation du mot de passe -->
         <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
+            <label for="password_confirmation" class="block text-gray-700 font-semibold">Confirmer le mot de passe</label>
+            <input id="password_confirmation" name="password_confirmation" type="password" 
+                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   autocomplete="new-password" required>
+            @error('password_confirmation')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        <!-- Bouton Enregistrer -->
+        <div class="flex items-center justify-between">
+            <button type="submit" 
+                    class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                Enregistrer
+            </button>
 
             @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                <p class="text-sm text-green-600">
+                    Mot de passe mis à jour avec succès.
+                </p>
             @endif
         </div>
     </form>

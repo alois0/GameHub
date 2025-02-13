@@ -9,25 +9,7 @@
 <body class="bg-gray-100">
     
     <!-- Navigation -->
-    <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
-        <div class="text-xl font-bold">
-            <a href="/" class="hover:text-green-500">GameHub</a>
-        </div>
-        <ul class="flex gap-4">
-            @auth
-                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profil</a></li>
-                <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
-                <li>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
-                    </form>
-                </li>
-            @else
-                <li><a href="{{ route('login') }}" class="hover:text-green-500">Connexion</a></li>
-            @endauth
-        </ul>
-    </nav>
+    @include('components.nav')
 
     <!-- Définition des couleurs pour le statut -->
     @php
