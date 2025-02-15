@@ -1,7 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Utilisateur avec Panier</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
 <!-- Navbar -->
 <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center relative">
     <div class="text-xl font-bold">
-        <a class="navbar-brand" href="{{ route('home') }}">
+        <a href="{{ route('home') }}" class="navbar-brand">
             <img src="{{ asset('image/LOgo.png') }}" alt="Logo" class="h-10">
         </a>
     </div>
@@ -18,11 +28,10 @@
                 </svg> 
                 @if(session('cart') && count(session('cart')) > 0) 
                 <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full"> {{ count(session('cart')) }} 
-
                 </span> 
                 @endif 
             </a> 
-            </li>
+        </li>
 
         <!-- Icône Utilisateur -->
         <li>
@@ -35,8 +44,7 @@
     </ul>
 
     <!-- Menu déroulant sous la navbar -->
-    <div id="user-menu" class="absolute top-full right-0 w-48 bg-white text-black rounded-md shadow-lg py-2 z-20
-                overflow-hidden transition-all duration-300 ease-in-out scale-y-0 origin-top hidden">
+    <div id="user-menu" class="absolute top-full right-0 w-48 bg-white text-black rounded-md shadow-lg py-2 z-20 overflow-hidden transform scale-y-0 origin-top transition-all duration-300 ease-in-out hidden">
         @auth
             <a href="{{ route('profile.index') }}" class="block px-4 py-2 hover:bg-gray-200">Profil</a>
             <form method="POST" action="{{ route('logout') }}" class="block px-4 py-2 hover:bg-gray-200">
@@ -50,22 +58,22 @@
     </div>
 </nav>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const userMenuButton = document.getElementById('user-menu-button');
         const userMenu = document.getElementById('user-menu');
 
+        // Ouvrir/fermer le menu au clic
         userMenuButton.addEventListener('click', function (event) {
             event.stopPropagation();
 
             if (userMenu.classList.contains('hidden')) {
                 userMenu.classList.remove('hidden');
                 setTimeout(() => {
-                    userMenu.classList.remove('scale-y-0');
+                    userMenu.classList.remove('scale-y-0'); // Appliquer l'effet de déploiement
                 }, 10);
             } else {
-                userMenu.classList.add('scale-y-0');
+                userMenu.classList.add('scale-y-0'); // Replier le menu
                 setTimeout(() => {
                     userMenu.classList.add('hidden');
                 }, 300);
@@ -83,3 +91,6 @@
         });
     });
 </script>
+
+</body>
+</html>
