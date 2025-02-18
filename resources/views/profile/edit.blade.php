@@ -54,6 +54,47 @@
             </form>
         </section>
 
+        <!-- Formulaire pour mettre à jour l'adresse par défaut -->
+<section class="bg-white shadow-lg rounded-lg p-6 mb-6">
+    <header class="border-b pb-4 mb-4">
+        <h2 class="text-2xl font-semibold text-gray-800">Adresse par défaut</h2>
+        <p class="mt-1 text-sm text-gray-600">
+            Choisissez une adresse comme adresse par défaut.
+        </p>
+    </header>
+
+    <form method="POST" action="{{ route('profile.updateDefaultAddress') }}" class="space-y-6">
+        @csrf
+        @method('PATCH')
+
+        <div>
+            <label for="address_id" class="block text-gray-700 font-semibold">Sélectionner une adresse par défaut</label>
+            <select id="address_id" name="address_id" 
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Sélectionner une adresse</option>
+                @foreach($addresses as $address)
+                    <option value="{{ $address->id }}" {{ $address->is_default ? 'selected' : '' }}>
+                        {{ $address->street_name }}, {{ $address->street_number }}, {{ $address->city }} - {{ $address->postal_code }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <button type="submit" 
+                class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+            Mettre à jour l'adresse par défaut
+        </button>
+    </form>
+</section>
+
+
+
+
+
+
+          
+
+
         <!-- Formulaire de mise à jour du mot de passe -->
         <section class="bg-white shadow-lg rounded-lg p-6 mb-6">
             <header class="border-b pb-4 mb-4">

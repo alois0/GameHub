@@ -54,7 +54,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::patch('/update-default-address', [ProfileController::class, 'updateDefaultAddress'])->name('profile.updateDefaultAddress');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        
     });
 
     // Routes pour les numéros de téléphone

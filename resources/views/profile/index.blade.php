@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil - GameHub</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100">
     
     <!-- Navigation -->
@@ -24,12 +26,24 @@
             </div>
 
             <!-- Bouton Modifier Profil -->
-<div class="mt-6 text-right">
-    <a href="{{ route('profile.edit') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
-        Modifier mon profil
-    </a>
-</div>
+            <div class="mt-6 text-right ml-auto">
+                <a href="{{ route('profile.edit') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                    Modifier mon profil
+                </a>
+            </div>
         </div>
+
+        <!-- Adresse par défaut -->
+        <h2 class="text-xl font-semibold mt-6">Adresse par défaut</h2>
+        @if($defaultAddress)
+            <div class="mt-4 p-4 bg-gray-200 rounded-lg">
+                <p><strong>Rue :</strong> {{ $defaultAddress->street_name }}, {{ $defaultAddress->street_number }}</p>
+                <p><strong>Ville :</strong> {{ $defaultAddress->city }}</p>
+                <p><strong>Code Postal :</strong> {{ $defaultAddress->postal_code }}</p>
+            </div>
+        @else
+            <p class="text-gray-600 mt-2">Aucune adresse par défaut définie.</p>
+        @endif
 
         <!-- Historique des 3 dernières commandes -->
         <h2 class="text-xl font-semibold mt-6">Mes 3 dernières commandes</h2>
@@ -77,4 +91,5 @@
     </div>
 
 </body>
+
 </html>

@@ -67,10 +67,19 @@ class User extends Authenticatable
 
     public function addresses()
     {
-        return $this->belongsToMany(Address::class, 'address_user')
-                    ->withPivot('is_default');
-
+        return $this->belongsToMany(Address::class, 'address_user', 'user_id', 'address_id')
+                    ->withPivot('is_default') // Inclut 'is_default' dans la table pivot
+                    ->using(UserAddress::class); // Utilise le modèle UserAddress comme pivot
+                    
     }
+
+public function defaultAddress()
+{
+    return $this->hasOne(UserAddress::class)
+                ->where('is_default', 1)
+                ->with('addresses');
+}
+
     
 
 
