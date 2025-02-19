@@ -78,9 +78,9 @@
 </head>
 <body class="bg-gray-100">
     <!-- Navigation -->
-    <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
+    <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center mb-8">
         <div class="text-xl font-bold">
-        <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('image/LOgo.png') }}" alt="image"></a>
+            <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('image/LOgo.png') }}" alt="image"></a>
         </div>
         <ul class="flex gap-4">
             @auth

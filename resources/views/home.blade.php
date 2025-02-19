@@ -70,11 +70,10 @@
         
         <ul class="flex gap-4">
             @auth
-                <li><li><a href="{{ route('products.index') }}" class="hover:text-green-500">Produits</a></li> <!-- Lien ajouté pour produits -->
-                <a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a>
-                <a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a>
+                <li><a href="{{ route('products.index') }}" class="hover:text-green-500">Produits</a></li>
+                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a></li>
+                <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
                 <li><a href="{{ route('orders.index') }}" class="hover:text-green-500">Commandes</a></li>
-                </li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf

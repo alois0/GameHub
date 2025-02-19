@@ -90,7 +90,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
-
 // Route pour le checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 // Route pour traiter la commande (POST)
@@ -152,9 +151,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
 });
 
+//serach
+Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 
- 
 // Routes d'authentification (incluses par Laravel Breeze ou autre package)
 require __DIR__ . '/auth.php';
 
-Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
+

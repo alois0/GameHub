@@ -53,11 +53,11 @@
 </head>
 <body class="bg-gray-100">
     <!-- Navigation -->
-    <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
-        <div class="flex items-center gap-10">
-            <div class="text-xl font-bold">
-                <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('image/LOgo.png') }}" alt="image"></a>
-            </div>
+    <nav class="bg-gray-900 text-white py-4 px-8 nav-container">
+        <div class="text-xl font-bold">
+            <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('image/LOgo.png') }}" alt="image"></a>
+        </div>
+        <div class="search-container">
             <form class="flex" role="search" action="{{ route('products.search') }}" method="GET">
                 <input class="form-control me-2 px-4 py-2 rounded-l-md text-black" type="search" name="query" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success px-4 py-2 rounded-r-md" type="submit" style="background: linear-gradient(90deg, #289EB6 0%, #248E5E 100%); color: white;">Search</button>
