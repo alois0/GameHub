@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $fillable = [
         'product_name',
+        'created_at',
         'description',
         'price',
         'stock_quantity',
@@ -48,6 +49,11 @@ class Product extends Model
         return $this->belongsToMany(Platform::class, 'product_platform', 'product_id', 'platform_id');
     }
     
+    public function images()
+{
+    return $this->hasMany(ProductImage::class, 'id');
+}
+
     
 
     

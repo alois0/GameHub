@@ -17,7 +17,7 @@ class ProductController extends Controller
     public function index()
     {
         // Récupérer tous les produits
-        $products = Product::all();
+        $products = Product::paginate(9);
         
         // Retourner la vue avec les produits
         return view('products.index', compact('products')); // Passer les produits à la vue
@@ -25,7 +25,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::findOrFail($id); // Récupère le produit par son ID
+        $product = Product::with(['images','categories', 'platforms', 'reviews.user'])->findOrFail($id);
         return view('products.show', compact('product'));
     }
 
@@ -61,7 +61,8 @@ class ProductController extends Controller
        $query = $request->input('query');
        $products = Product::where('product_name', 'LIKE', "%{$query}%")
            ->orWhere('description', 'LIKE', "%{$query}%")
-           ->get();
+           ->paginate(9)
+           ->appends(['query' => $query]);
 
        return view('products.index', compact('products'));
    }

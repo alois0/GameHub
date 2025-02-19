@@ -17,6 +17,7 @@ class Category extends Model
     protected $fillable = [
         'category_name',
         'description',
+        'category_image',
     ];
 
     // Relation : Une catégorie peut avoir plusieurs produits

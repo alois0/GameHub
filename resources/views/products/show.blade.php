@@ -23,26 +23,96 @@
         #reviews-list::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto auto;
+            gap: 10px;
+        }
+        .image-grid img {
+            object-fit: cover;
+        }
+        .image-grid .top-image {
+            width: 100%;
+            height: 400px; 
+            border-radius: 15px;
+        }
+        .image-grid .large-image {
+            grid-column: span 2;
+            width: 100%;
+            height: 700px; 
+            border-radius: 15px;
+        }
+        .text-2xl {
+            font-size: 40px;
+            font-weight: 700px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .mt-8 {
+            margin-top: 100px;
+        }
+        .mb-4 {
+            margin-bottom: 100px;
+        }
+        .gap-6 {
+            gap: 1.5rem;
+        }
+        .product-details h1{
+            text-align: center;
+            font-size: 40px;
+        }
+        .product-details h2{
+            font-size: 25px;
+        }
+        .description{
+            align-items: center;
+            text-align: center;
+        }
+        .product-image{
+            border-radius: 20px;
+        }
+       
+       
     </style>
 </head>
 <body class="bg-gray-100">
     <!-- Navigation -->
-    @include('components.nav')
+    <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
+        <div class="text-xl font-bold">
+        <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('image/LOgo.png') }}" alt="image"></a>
+        </div>
+        <ul class="flex gap-4">
+            @auth
+                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profil</a></li>
+                <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
+                <li><a href="{{ route('orders.index') }}" class="hover:text-green-500">Commandes</a></li>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
+                    </form>
+                </li>
+            @else
+                <li><a href="{{ route('login') }}" class="hover:text-green-500">Connexion</a></li>
+                <li><a href="{{ route('register') }}" class="hover:text-green-500">Inscription</a></li>
+            @endauth
+        </ul>
+    </nav>
 
     <!-- Contenu du produit -->
     <div class="container mx-auto mt-8">
-        <h1 class="mb-4 product-details text-3xl font-bold">{{ $product->product_name }}</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 @if($product->image_path)
-                <img src="{{ asset('image/' . $product->image_path) }}" class="img-fluid " alt="{{ $product->product_name }}">
+                    <img src="{{ asset('image/' . $product->image_path) }}" class="img-fluid product-image" alt="{{ $product->product_name }}">
                 @else
-                    <img src="{{ asset('image/default.png' . $product->image_path ) }}" class="img-fluid" alt="Image par défaut">
-                @endauth
+                    <img src="{{ asset('image/default.png') }}" class="img-fluid product-image" alt="Image par défaut">
+                @endif
             </div>
             <div class="product-details">
+                <h1 class="text-3xl font-bold">{{ $product->product_name }}</h1>
                 <h2 class="text-2xl font-bold">€{{ number_format($product->price, 2) }}</h2>
-                <p class="text-gray-700">{{ $product->description }}</p>
                 <p class="text-gray-500"><strong>Catégories :</strong> {{ $product->categories->pluck('category_name')->join(', ') }}</p>
                 <p class="text-gray-500"><strong>Plateformes :</strong> {{ $product->platforms->pluck('name')->join(', ') }}</p>
                 <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST">
@@ -60,6 +130,28 @@
                     </button>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <div class="description">
+        <div class="container mx-auto mt-8">
+            <h2 class="text-2xl font-bold mb-4">Description</h2>
+            <p>{{ $product->description }}</p>
+        </div>
+
+    </div>
+
+    <!-- Visuels -->
+    <div class="container mx-auto mt-8">
+        <h2 class="text-2xl font-bold mb-4">Visuels</h2>
+        <div class="image-grid mb-8">
+            @foreach($product->images as $index => $image)
+                @if($index < 2)
+                    <img src="{{ asset('image/products/' . $image->image_path) }}" class="top-image" alt="{{ $product->product_name }}">
+                @elseif($index == 2)
+                    <img src="{{ asset('image/products/' . $image->image_path) }}" class="large-image" alt="{{ $product->product_name }}">
+                @endif
+            @endforeach
         </div>
     </div>
 
