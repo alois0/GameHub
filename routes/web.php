@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CheckoutController;
@@ -6,7 +7,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
-
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
@@ -14,10 +14,9 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\UserController;
-
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\AddressController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
@@ -69,13 +68,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'show' => 'products.show', 
             'edit' => 'products.edit', 
             'update' => 'products.update', 
+            'destroy' => 'products.destroy', // Add this line to complete the resource routes
         ]);
 
     // Routes pour le panier
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Afficher le panier
         Route::post('/add/{productId}', [CartController::class, 'addProduct'])->name('cart.add'); // Ajouter un produit
-
         Route::delete('/remove/{productId}', [CartController::class, 'removeProduct'])->name('cart.remove'); // Supprimer un produit
         Route::delete('/clear', [CartController::class, 'clearCart'])->name('cart.clear'); // Vider le panier
         Route::patch('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
@@ -117,9 +116,6 @@ Route::post('/payment/process', [PaymentController::class, 'process']);
 Route::get('/confirmation', function () {
     return view('payment.confirmation'); // Spécifier le dossier "payment"
 });
-
-// Route pour le detail du produit
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
 // Route pour les reviews 
 Route::post('/products/{id}/reviews', [ProductReviewController::class, 'store'])
