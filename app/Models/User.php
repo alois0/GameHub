@@ -80,7 +80,6 @@ public function defaultAddress()
                 ->with('addresses');
 }
 
-    
 
 
 }
