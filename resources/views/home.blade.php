@@ -63,33 +63,7 @@
 </head>
 <body class="bg-gray-100">
     <!-- Navigation -->
-    <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
-        <div class="text-xl font-bold">
-            <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('image/LOgo.png') }}" alt="image"></a>
-        </div>
-        
-        <ul class="flex gap-4">
-            @auth
-                <li><a href="{{ route('products.index') }}" class="hover:text-green-500">Produits</a></li>
-                <li><a href="{{ route('profile.edit') }}" class="hover:text-green-500">Profile</a></li>
-                <li><a href="{{ route('cart.index') }}" class="hover:text-green-500">Panier</a></li>
-                <li><a href="{{ route('orders.index') }}" class="hover:text-green-500">Commandes</a></li>
-                <li>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="hover:text-green-500">Déconnexion</button>
-                    </form>
-                </li>
-            @else
-                <li>
-                    <a href="{{ route('login') }}" class="hover:text-green-500">Se connecter</a>
-                </li>
-                <li>
-                    <a href="{{ route('register') }}" class="hover:text-green-500">Créer un compte</a>
-                </li>
-            @endauth
-        </ul>
-    </nav>
+    @include('components.nav')
 
     <div class="carousel-slider">
         @foreach($latestProducts as $index => $product)

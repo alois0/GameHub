@@ -17,6 +17,7 @@ class Product extends Model
         'stock_quantity',
         'release_date',
         'image_path',
+        'created_at'
     ];
 
     /**
