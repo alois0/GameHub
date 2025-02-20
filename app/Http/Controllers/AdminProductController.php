@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Platform;
 use Illuminate\Http\Request;
 
 class AdminProductController extends Controller
@@ -9,18 +11,27 @@ class AdminProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('admin.products.index', compact('products'));
+        $categories = Category::all();
+        return view('admin.products.index', compact('products', 'categories'));
     }
 
     public function create()
     {
-        $categories = \App\Models\Category::all();
-        $platforms = \App\Models\Platform::all();
+        $categories = Category::all();
+        $platforms = Platform::all();
         return view('admin.products.create', compact('categories', 'platforms'));
     }
 
     public function store(Request $request)
     {
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'stock_quantity' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
         $product = new Product();
         $product->product_name = $request->input('product_name');
         $product->description = $request->input('description');
@@ -28,8 +39,6 @@ class AdminProductController extends Controller
         $product->stock_quantity = $request->input('stock_quantity');
         $product->category_id = $request->input('category_id');
         $product->save();
-
-        $product->platforms()->sync($request->input('platforms'));
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
@@ -43,8 +52,8 @@ class AdminProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        $categories = \App\Models\Category::all();
-        $platforms = \App\Models\Platform::all();
+        $categories = Category::all();
+        $platforms = Platform::all();
         return view('admin.products.edit', compact('product', 'categories', 'platforms'));
     }
 
