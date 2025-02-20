@@ -17,6 +17,7 @@ class Product extends Model
         'stock_quantity',
         'release_date',
         'image_path',
+        'created_at'
     ];
 
     /**
@@ -51,7 +52,7 @@ class Product extends Model
     
     public function images()
 {
-    return $this->hasMany(ProductImage::class, 'id');
+    return $this->hasMany(ProductImage::class, 'product_id');
 }
 
     
