@@ -47,5 +47,9 @@
             <p class="text-center text-gray-600 mt-6">Vous n'avez passé aucune commande.</p>
         @endif
     </div>
+
+    <div class="h-32"></div>
+
+    @include('components.footer')
 </body>
 </html>

@@ -95,5 +95,8 @@
         </div>
     </div>
 
+    <div class="h-32"></div>
+
+    @include('components.footer')
 </body>
 </html>

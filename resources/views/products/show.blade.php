@@ -188,6 +188,10 @@
         </div>
     </div>
 
+    <div class="h-32"></div>
+
+    @include('components.footer')
+
     <!-- Script pour afficher/masquer la liste des avis -->
     <script>
         document.getElementById('toggle-reviews').addEventListener('click', function() {

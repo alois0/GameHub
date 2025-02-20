@@ -61,6 +61,10 @@
         </div>
     </div>
 
+    <div class="h-32"></div>
+
+    @include('components.footer')
+
     <!-- Script pour afficher/cacher le formulaire de nouvelle adresse -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {

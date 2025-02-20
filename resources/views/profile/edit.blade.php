@@ -199,6 +199,10 @@
         </section>
     </div>
 
+    <div class="h-32"></div>
+
+    @include('components.footer')
+
     <script>
         document.getElementById('open-delete-modal').addEventListener('click', function () {
             document.getElementById('delete-modal').classList.remove('hidden');

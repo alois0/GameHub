@@ -47,6 +47,10 @@
         </div>
     </div>
 
+    <div class="h-32"></div>
+
+    @include('components.footer')
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var stripe = Stripe('{{ $stripePublicKey }}'); // Clé publique Stripe

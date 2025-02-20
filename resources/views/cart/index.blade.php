@@ -88,5 +88,11 @@
         <a href="{{ route('checkout') }}" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Passer à la caisse</a>
         <a href="{{ route('products.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Retourner aux Produits</a>
     </div>
+
+    <div class="h-32"></div>
+
+    @include('components.footer')
+
+
 </body>
 </html>
