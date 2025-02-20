@@ -9,6 +9,8 @@ use App\Models\Order;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\OrderConfirmedNotification;
 
 class PaymentController extends Controller
 {
@@ -106,12 +108,22 @@ class PaymentController extends Controller
 
             Log::info('Produits ajoutés à la commande ID : ' . $order->id);
 
+            Log::info('📧 Envoi immédiat de l’email de confirmation à : ' . $user->email);
+            Notification::sendNow($user, new OrderConfirmedNotification($order));
+
+
+            Log::info('✅ Email envoyé.');
+
+
             // Vider le panier
             $cart->products()->detach();
             Log::info('Panier vidé pour l\'utilisateur ID : ' . $user->id);
 
             // Supprimer l'adresse de la session après utilisation
             session()->forget('checkout_address_id');
+
+            
+            
 
             return response()->json(['success' => true, 'message' => 'Commande créée avec succès.']);
         } else {

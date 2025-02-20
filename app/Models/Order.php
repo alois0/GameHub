@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Notifications\OrderConfirmedNotification;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -15,6 +16,17 @@ class Order extends Model
         'total_price',
         'status',
     ];
+
+
+
+
+    public function confirmOrder()
+    {
+        $this->update(['status' => 'confirmed']);
+
+        // Envoyer l'email à l'utilisateur
+        $this->user->notify(new OrderConfirmedNotification($this));
+    }
 
     /**
      * Relation : Une commande appartient à un utilisateur.
