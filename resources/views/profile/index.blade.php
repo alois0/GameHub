@@ -13,13 +13,15 @@
     <!-- Navigation -->
     @include('components.nav')
 
+    
+
     <!-- Profil de l'utilisateur -->
     <div class="container mx-auto mt-8 p-6 max-w-4xl bg-white shadow-lg rounded-lg">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Mon Profil</h1>
 
         <!-- Informations de l'utilisateur -->
         <div class="flex items-center space-x-4">
-            <img src="{{ asset('image/profile.png') }}" alt="Avatar" class="w-16 h-16 rounded-full border border-gray-400">
+            
             <div>
                 <p class="text-xl font-semibold">{{ Auth::user()->name }}</p>
                 <p class="text-gray-600">{{ Auth::user()->email }}</p>

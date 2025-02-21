@@ -13,6 +13,8 @@
     <!-- Navigation -->
     @include('components.nav')
 
+    
+
     <!-- Contenu du Paiement -->
     <div class="container mx-auto mt-8 max-w-lg">
         <div class="bg-white shadow-lg rounded-lg p-6">

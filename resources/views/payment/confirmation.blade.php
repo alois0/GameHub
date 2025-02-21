@@ -13,6 +13,8 @@
     <!-- Navigation -->
     @include('components.nav')
 
+    
+
     <!-- Contenu de la confirmation -->
     <div class="container mx-auto mt-12 max-w-lg">
         <div class="bg-white shadow-lg rounded-lg p-6 text-center">

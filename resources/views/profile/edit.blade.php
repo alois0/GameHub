@@ -11,6 +11,8 @@
     <!-- Navigation -->
     @include('components.nav')
 
+    
+
     <div class="container mx-auto mt-8 p-6 max-w-4xl bg-white shadow-lg rounded-lg">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Modifier mon profil</h1>
 

@@ -11,6 +11,16 @@
     <!-- Navigation -->
     @include('components.nav')
 
+    <!-- Bouton Retour -->
+    <div class="relative">
+    <div class="absolute top-4 left-4">
+        <a href="{{ route('orders.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 text-sm">
+            ← Retour
+        </a>
+    </div>
+</div>
+
+
     <!-- Définition des couleurs pour le statut -->
     @php
         $statusColors = [

@@ -11,6 +11,8 @@
     <!-- Navigation -->
     @include('components.nav')
 
+    
+
     <!-- Contenu principal -->
     <div class="container mx-auto mt-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Choisissez une adresse</h1>
