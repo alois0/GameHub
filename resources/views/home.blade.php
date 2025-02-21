@@ -63,7 +63,11 @@
 </head>
 <body class="bg-gray-100">
     <!-- Navigation -->
+
+    
     @include('components.nav')
+    
+    
 
     <div class="carousel-slider">
         @foreach($latestProducts as $index => $product)

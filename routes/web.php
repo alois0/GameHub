@@ -96,12 +96,16 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
 Route::middleware(['auth'])->group(function () {
-    // Afficher toutes les commandes
+    // Liste des commandes
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    
+
+    // Afficher une commande (sécurisée)
+    Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.show');
+
     // Annuler une commande
     Route::delete('/orders/{orderId}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 });
+
 
 Route::get('/orders/{orderId}', [OrderController::class, 'show'])->name('orders.show');
 
