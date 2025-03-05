@@ -48,12 +48,74 @@
                     <td class="py-2 px-4 border-b text-center">{{ $product->stock_quantity }}</td>
                     <td class="py-2 px-4 border-b text-center">{{ $product->category ? $product->category->category_name : 'Non catégorisé' }}</td>
                     <td class="py-2 px-4 border-b text-center">
-                        <a href="{{ route('admin.products.edit', $product->id) }}" class="text-blue-500 hover:text-blue-700">Edit</a>
-                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
-                        </form>
+                        <button type="button" class="text-blue-500 hover:text-blue-700" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">Edit</button>
+
+                        <!-- Edit Product Modal -->
+                        <div class="modal fade" id="editProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="editProductModalLabel{{ $product->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editProductModalLabel{{ $product->id }}">Edit Product</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="editProductForm{{ $product->id }}" method="POST" action="{{ route('admin.products.update', $product->id) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="mb-3">
+                                                <label for="editProductName{{ $product->id }}" class="form-label">Nom</label>
+                                                <input type="text" class="form-control" id="editProductName{{ $product->id }}" name="product_name" value="{{ $product->product_name }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editProductDescription{{ $product->id }}" class="form-label">Description</label>
+                                                <textarea class="form-control" id="editProductDescription{{ $product->id }}" name="description" required>{{ $product->description }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editProductPrice{{ $product->id }}" class="form-label">Prix</label>
+                                                <input type="number" step="0.01" class="form-control" id="editProductPrice{{ $product->id }}" name="price" value="{{ $product->price }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editProductStock{{ $product->id }}" class="form-label">Quantité en stock</label>
+                                                <input type="number" class="form-control" id="editProductStock{{ $product->id }}" name="stock_quantity" value="{{ $product->stock_quantity }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editProductCategory{{ $product->id }}" class="form-label">Catégorie</label>
+                                                <select class="form-control" id="editProductCategory{{ $product->id }}" name="category_id" required>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div></div>
+                        <button type="button" class="text-red-500 hover:text-red-700" data-bs-toggle="modal" data-bs-target="#deleteProductModal{{ $product->id }}">Delete</button>
+                        <div class="modal fade" id="deleteProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="deleteProductModalLabel{{ $product->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteProductModalLabel{{ $product->id }}">Delete Product</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete this product?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                        <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}, class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Delete Product</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </td>
                 </tr>
                 @endforeach
@@ -110,5 +172,11 @@
                 "pageLength": 25
             });
         });
+    </script>
+
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this product?');
+        }
     </script>
 @endsection

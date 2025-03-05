@@ -10,6 +10,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminUserController;
@@ -146,7 +147,7 @@ Route::middleware(['auth'])->group(function () {
         'destroy' => 'admin.products.destroy',
     ]);
 
-    Route::resource('admin/categories', CategoryController::class)->names([
+    Route::resource('admin/categories', AdminCategoryController::class)->names([
         'index' => 'admin.categories.index',
         'create' => 'admin.categories.create',
         'store' => 'admin.categories.store',
@@ -176,7 +177,6 @@ Route::middleware(['auth'])->group(function () {
         'destroy' => 'admin.users.destroy',
     ]);
 });
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout/choose-address', [CheckoutController::class, 'chooseAddress'])->name('checkout.choose_address');
     Route::post('/checkout/store-address', [CheckoutController::class, 'storeAddress'])->name('checkout.store_address');
