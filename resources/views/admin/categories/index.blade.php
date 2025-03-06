@@ -32,7 +32,7 @@
                     <td class="py-2 px-4 border-b text-center">
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-id="{{ $category->id }}" data-name="{{ $category->category_name }}" data-description="{{ $category->description }}" data-image="{{ $category->category_image }}">Edit</button>
                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-id="{{ $category->id }}">Delete</button>
-                    </td>
+                        </td>
                 </tr>
                 @endforeach
             </tbody>

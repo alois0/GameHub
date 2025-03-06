@@ -1,4 +1,4 @@
-<!-- filepath: /c:/xampp/htdocs/GameHub/resources/views/admin/products/index.blade.php -->
+
 @extends('layouts.admin')
 
 @section('title', 'Produits')
@@ -46,7 +46,11 @@
                     <td class="py-2 px-4 border-b text-center">{{ $product->description }}</td>
                     <td class="py-2 px-4 border-b text-center">{{ number_format($product->price, 2) }} €</td>
                     <td class="py-2 px-4 border-b text-center">{{ $product->stock_quantity }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ $product->category ? $product->category->category_name : 'Non catégorisé' }}</td>
+                    <td class="py-2 px-4 border-b text-center">
+                        @foreach($product->categories as $category)
+                            {{ $category->category_name }}
+                        @endforeach
+                    </td>
                     <td class="py-2 px-4 border-b text-center">
                         <button type="button" class="text-blue-500 hover:text-blue-700" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">Edit</button>
 
@@ -80,9 +84,9 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="editProductCategory{{ $product->id }}" class="form-label">Catégorie</label>
-                                                <select class="form-control" id="editProductCategory{{ $product->id }}" name="category_id" required>
+                                                <select class="form-control" id="editProductCategory{{ $product->id }}" name="category_id[]" multiple required>
                                                     @foreach($categories as $category)
-                                                        <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
+                                                        <option value="{{ $category->category_id }}" {{ $product->categories->contains($category->category_id) ? 'selected' : '' }}>{{ $category->category_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -105,7 +109,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                        <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}, class="inline">
+                                        <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Delete Product</button>
@@ -152,9 +156,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="addProductCategory" class="form-label">Catégorie</label>
-                            <select class="form-control" id="addProductCategory" name="category_id" required>
+                            <select class="form-control" id="addProductCategory" name="category_id[]" multiple required>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                    <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
                                 @endforeach
                             </select>
                         </div>

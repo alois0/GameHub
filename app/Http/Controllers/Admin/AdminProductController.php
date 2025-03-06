@@ -1,6 +1,7 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Platform;
@@ -29,7 +30,7 @@ class AdminProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'stock_quantity' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:categories,category_id',
         ]);
 
         $product = new Product();
@@ -37,16 +38,11 @@ class AdminProductController extends Controller
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->stock_quantity = $request->input('stock_quantity');
-        $product->category_id = $request->input('category_id');
         $product->save();
 
-        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
-    }
+        $product->categories()->attach($request->input('category_id'));
 
-    public function show($id)
-    {
-        $product = Product::findOrFail($id);
-        return view('admin.products.show', compact('product'));
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
     public function edit($id)
@@ -59,15 +55,22 @@ class AdminProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'stock_quantity' => 'required|integer',
+            'category_id' => 'required|exists:categories,category_id',
+        ]);
+
         $product = Product::findOrFail($id);
         $product->product_name = $request->input('product_name');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->stock_quantity = $request->input('stock_quantity');
-        $product->category_id = $request->input('category_id');
         $product->save();
 
-        $product->platforms()->sync($request->input('platforms'));
+        $product->categories()->sync($request->input('category_id'));
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
@@ -75,6 +78,7 @@ class AdminProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        $product->categories()->detach();
         $product->delete();
 
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');

@@ -22,11 +22,15 @@ class Platform extends Model
     ];
 
     /**
+     * Désactiver les timestamps.
+     */
+    public $timestamps = false;
+
+    /**
      * Relation avec les produits.
      */
     public function products()
-{
-    return $this->belongsToMany(Product::class, 'product_platform', 'platform_id', 'product_id');
-}
-
+    {
+        return $this->belongsToMany(Product::class, 'product_platform', 'platform_id', 'product_id');
+    }
 }

@@ -37,7 +37,7 @@ class AdminCategoryController extends Controller
         Category::create([
             'category_name' => $request->category_name,
             'description' => $request->description,
-            'category_image' => $imageName,
+            'category_image' => $request->$imageName,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');

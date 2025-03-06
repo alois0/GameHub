@@ -7,15 +7,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminCategoryController;
-use App\Http\Controllers\AdminOrderController;
-use App\Http\Controllers\AdminProductController;
-use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminPlatformController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\AddressController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,7 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'show' => 'products.show', 
             'edit' => 'products.edit', 
             'update' => 'products.update', 
-            'destroy' => 'products.destroy', // Add this line to complete the resource routes
+            'destroy' => 'products.destroy',
         ]);
 
     // Routes pour le panier
@@ -82,8 +81,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Routes pour les catégories
-    Route::resource('categories', CategoryController::class)
-        ->except(['destroy'])
+    Route::resource('categories', AdminCategoryController::class)
         ->names([
             'index' => 'categories.index',
             'create' => 'categories.create',
@@ -91,8 +89,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'show' => 'categories.show',
             'edit' => 'categories.edit',
             'update' => 'categories.update',
+            'destroy' => 'categories.destroy',
         ]);
-    Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    // Route pour supprimer une catégorie
+    Route::delete('categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
 // Route pour le checkout
@@ -157,7 +158,7 @@ Route::middleware(['auth'])->group(function () {
         'destroy' => 'admin.categories.destroy',
     ]);
 
-    Route::resource('admin/platforms', PlatformController::class)->names([
+    Route::resource('admin/platforms', AdminPlatformController::class)->names([
         'index' => 'admin.platforms.index',
         'create' => 'admin.platforms.create',
         'store' => 'admin.platforms.store',
@@ -177,6 +178,7 @@ Route::middleware(['auth'])->group(function () {
         'destroy' => 'admin.users.destroy',
     ]);
 });
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout/choose-address', [CheckoutController::class, 'chooseAddress'])->name('checkout.choose_address');
     Route::post('/checkout/store-address', [CheckoutController::class, 'storeAddress'])->name('checkout.store_address');
