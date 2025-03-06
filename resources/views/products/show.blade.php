@@ -112,7 +112,11 @@
                 @endif
             </div>
             <div class="product-details">
-                <h1 class="text-3xl font-bold">{{ $product->product_name }}</h1>
+                <h1 class="text-3xl font-bold">{{ $product->product_name }} 
+                    @if ($product->stock_quantity <= 0)
+                        <span class="ml-2 text-red-500 text-lg font-semibold">(Épuisé)</span>
+                @endif
+                </h1>
                 <h2 class="text-2xl font-bold">€{{ number_format($product->price, 2) }}</h2>
                 <p class="text-gray-500"><strong>Catégories :</strong> {{ $product->categories->pluck('category_name')->join(', ') }}</p>
                 <p class="text-gray-500"><strong>Plateformes :</strong> {{ $product->platforms->pluck('name')->join(', ') }}</p>

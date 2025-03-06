@@ -9,9 +9,10 @@ class Product extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'product_name',
-        'created_at',
         'description',
         'price',
         'stock_quantity',
@@ -35,8 +36,8 @@ class Product extends Model
     public function carts()
     {
         return $this->belongsToMany(Cart::class, 'cart_products')
-            ->withPivot('quantity', 'price', 'platform_id') // Ajoute platform_id
-            ->withTimestamps();
+            ->withPivot('quantity', 'price', 'platform_id'); // Ajoute platform_id
+            
     }
     
 
@@ -54,9 +55,5 @@ class Product extends Model
 {
     return $this->hasMany(ProductImage::class, 'product_id');
 }
-
-    
-
-    
 
 }
