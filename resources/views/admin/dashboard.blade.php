@@ -4,7 +4,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+    <h1 class="text-2xl font-bold mb-4">Administration</h1>
 
     <!-- Section Utilisateurs -->
     <h2 class="text-xl font-bold mb-4">Liste des Utilisateurs</h2>

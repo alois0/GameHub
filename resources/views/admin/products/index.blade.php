@@ -5,7 +5,7 @@
 
 @section('content')
     <h1 class="text-2xl font-bold mb-4">Produits</h1>
-    <button class="btn btn-success mb-4" data-bs-toggle="modal" data-bs-target="#addProductModal">Add Product</button>
+    <button class="btn btn-success mb-4" data-bs-toggle="modal" data-bs-target="#addProductModal">Ajouter</button>
 
     <!-- Display Success Message -->
     @if(session('success'))
@@ -52,14 +52,14 @@
                         @endforeach
                     </td>
                     <td class="py-2 px-4 border-b text-center">
-                        <button type="button" class="text-blue-500 hover:text-blue-700" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">Edit</button>
+                        <button type="button" class="text-blue-500 hover:text-blue-700" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">Modifier</button>
 
                         <!-- Edit Product Modal -->
                         <div class="modal fade" id="editProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="editProductModalLabel{{ $product->id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="editProductModalLabel{{ $product->id }}">Edit Product</h5>
+                                        <h5 class="modal-title" id="editProductModalLabel{{ $product->id }}">Modifier Produit</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -90,29 +90,29 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            <button type="submit" class="btn btn-primary">Sauvegarder</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div></div>
-                        <button type="button" class="text-red-500 hover:text-red-700" data-bs-toggle="modal" data-bs-target="#deleteProductModal{{ $product->id }}">Delete</button>
+                        <button type="button" class="text-red-500 hover:text-red-700" data-bs-toggle="modal" data-bs-target="#deleteProductModal{{ $product->id }}">Supprimer</button>
                         <div class="modal fade" id="deleteProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="deleteProductModalLabel{{ $product->id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteProductModalLabel{{ $product->id }}">Delete Product</h5>
+                                        <h5 class="modal-title" id="deleteProductModalLabel{{ $product->id }}">Supprimer</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Are you sure you want to delete this product?</p>
+                                        <p>Êtes vous sûre?</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
                                         <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete Product</button>
+                                            <button type="submit" class="btn btn-danger">Supprimer</button>
                                         </form>
 
                                     </div>
@@ -162,7 +162,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-success">Add Product</button>
+                        <button type="submit" class="btn btn-success">Ajouter</button>
                     </form>
                 </div>
             </div>

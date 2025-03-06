@@ -1,19 +1,19 @@
 @extends('layouts.admin')
 
-@section('title', 'Users')
+@section('title', 'Utilisateurs')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Users</h1>
-    <button class="btn btn-success mb-4" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>
+    <h1 class="text-2xl font-bold mb-4">Utilisateurs</h1>
+    <button class="btn btn-success mb-4" data-bs-toggle="modal" data-bs-target="#addUserModal">Nouveau Utilisateur</button>
     <div class="overflow-x-auto mb-8" style="max-height: 80vh;">
-        <table id="usersTable" class="min-w-full bg-white table-fixed">
+        <table id="usersTable" class="min-w-full bg-white table-fixed datatable">
             <thead>
                 <tr>
                     <th class="py-2 px-4 border-b w-1/12 text-center">ID</th>
-                    <th class="py-2 px-4 border-b w-3/12 text-center">Name</th>
-                    <th class="py-2 px-4 border-b w-3/12 text-center">Email</th>
+                    <th class="py-2 px-4 border-b w-3/12 text-center">Nom</th>
+                    <th class="py-2 px-4 border-b w-3/12 text-center">Mail</th>
                     <th class="py-2 px-4 border-b w-2/12 text-center">Role</th>
-                    <th class="py-2 px-4 border-b w-3/12 text-center">Actions</th>
+                    <th class="py-2 px-4 border-b w-3/12 text-center">Operations</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,36 +38,36 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                    <h5 class="modal-title" id="addUserModalLabel">Ajouter</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addUserForm" method="POST" action="{{ route('admin.users.store') }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="addName" class="form-label">Name</label>
+                            <label for="addName" class="form-label">Nom</label>
                             <input type="text" class="form-control" id="addName" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="addEmail" class="form-label">Email</label>
+                            <label for="addEmail" class="form-label">Mail</label>
                             <input type="email" class="form-control" id="addEmail" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label for="addRole" class="form-label">Role</label>
                             <select class="form-control" id="addRole" name="user_role" required>
                                 <option value="admin">Admin</option>
-                                <option value="user">User</option>
+                                <option value="user">Utilisateur</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="addPassword" class="form-label">Password</label>
+                            <label for="addPassword" class="form-label">Mot de passe</label>
                             <input type="password" class="form-control" id="addPassword" name="password" required>
                         </div>
                         <div class="mb-3">
-                            <label for="addPasswordConfirmation" class="form-label">Confirm Password</label>
+                            <label for="addPasswordConfirmation" class="form-label">Confirmation</label>
                             <input type="password" class="form-control" id="addPasswordConfirmation" name="password_confirmation" required>
                         </div>
-                        <button type="submit" class="btn btn-success">Add User</button>
+                        <button type="submit" class="btn btn-success">Ajouter Utilisateur</button>
                     </form>
                 </div>
             </div>
@@ -79,7 +79,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                    <h5 class="modal-title" id="editUserModalLabel">Modifier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -87,7 +87,7 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="editName" class="form-label">Name</label>
+                            <label for="editName" class="form-label">Nom</label>
                             <input type="text" class="form-control" id="editName" name="name" required>
                         </div>
                         <div class="mb-3">
@@ -98,18 +98,18 @@
                             <label for="editRole" class="form-label">Role</label>
                             <select class="form-control" id="editRole" name="user_role" required>
                                 <option value="admin">Admin</option>
-                                <option value="user">User</option>
+                                <option value="user">Utilisateur</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="editPassword" class="form-label">Password</label>
+                            <label for="editPassword" class="form-label">Mot de Passe</label>
                             <input type="password" class="form-control" id="editPassword" name="password">
                         </div>
                         <div class="mb-3">
-                            <label for="editPasswordConfirmation" class="form-label">Confirm Password</label>
+                            <label for="editPasswordConfirmation" class="form-label">Confirmation</label>
                             <input type="password" class="form-control" id="editPasswordConfirmation" name="password_confirmation">
                         </div>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Sauvgarder</button>
                     </form>
                 </div>
             </div>
@@ -121,15 +121,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
+                    <h5 class="modal-title" id="deleteUserModalLabel">Suprimer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete this user?</p>
+                    <p>Êtes vous sûr?</p>
                     <form id="deleteUserForm" method="POST" action="">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Suprimer</button>
                     </form>
                 </div>
             </div>

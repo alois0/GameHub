@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Orders')
+@section('title', 'Commandes')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Orders</h1>
+    <h1 class="text-2xl font-bold mb-4">Commandes</h1>
 
     <!-- Display Success Message -->
     @if(session('success'))
@@ -28,11 +28,11 @@
             <thead>
                 <tr>
                     <th class="py-2 px-4 border-b w-1/12 text-center">ID</th>
-                    <th class="py-2 px-4 border-b w-2/12 text-center">Customer</th>
+                    <th class="py-2 px-4 border-b w-2/12 text-center">Client</th>
                     <th class="py-2 px-4 border-b w-2/12 text-center">Total</th>
                     <th class="py-2 px-4 border-b w-2/12 text-center">Status</th>
                     <th class="py-2 px-4 border-b w-2/12 text-center">Date</th>
-                    <th class="py-2 px-4 border-b w-3/12 text-center">Actions</th>
+                    <th class="py-2 px-4 border-b w-3/12 text-center">Operations</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,9 +44,9 @@
                     <td class="py-2 px-4 border-b text-center">{{ $order->status }}</td>
                     <td class="py-2 px-4 border-b text-center">{{ $order->created_at->format('d/m/Y') }}</td>
                     <td class="py-2 px-4 border-b text-center">
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewOrderModal{{ $order->id }}">View</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editOrderModal{{ $order->id }}">Edit</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ $order->id }}">Delete</button>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewOrderModal{{ $order->id }}">Détails</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editOrderModal{{ $order->id }}">Modifier</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ $order->id }}">Supprimer</button>
                     </td>
                 </tr>
                 @endforeach
@@ -65,20 +65,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h5>Order ID: {{ $order->id }}</h5>
-                    <p>Customer: {{ $order->user->name }}</p>
-                    <p>Total: {{ number_format($order->total, 2) }} €</p>
+                    <h5>Commande ID: {{ $order->id }}</h5>
+                    <p>Client: {{ $order->user->name }}</p>
+                    <p>Totale: {{ number_format($order->total, 2) }} €</p>
                     <p>Status: {{ $order->status }}</p>
                     <p>Date: {{ $order->created_at->format('d/m/Y') }}</p>
-                    <h5>Order Items:</h5>
+                    <h5>Articles</h5>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Platform</th>
-                                <th>Address</th>
+                                <th>Nom</th>
+                                <th>Quantité</th>
+                                <th>Prix</th>
+                                <th>Platforme</th>
+                                <th>Addresse</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -103,7 +103,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editOrderModalLabel{{ $order->id }}">Edit Order</h5>
+                    <h5 class="modal-title" id="editOrderModalLabel{{ $order->id }}">Modifier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -113,14 +113,14 @@
                         <div class="mb-3">
                             <label for="editOrderStatus{{ $order->id }}" class="form-label">Status</label>
                             <select class="form-control" id="editOrderStatus{{ $order->id }}" name="status" required>
-                                <option value="Pending" {{ $order->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="Processing" {{ $order->status == 'Processing' ? 'selected' : '' }}>Processing</option>
-                                <option value="Shipped" {{ $order->status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
-                                <option value="Delivered" {{ $order->status == 'Delivered' ? 'selected' : '' }}>Delivered</option>
-                                <option value="Canceled" {{ $order->status == 'Canceled' ? 'selected' : '' }}>Canceled</option>
+                                <option value="Pending" {{ $order->status == 'Pending' ? 'selected' : '' }}>En attente</option>
+                                <option value="Processing" {{ $order->status == 'Processing' ? 'selected' : '' }}>En cours de traitement</option>
+                                <option value="Shipped" {{ $order->status == 'Shipped' ? 'selected' : '' }}>Expédié</option>
+                                <option value="Delivered" {{ $order->status == 'Delivered' ? 'selected' : '' }}>Livré</option>
+                                <option value="Canceled" {{ $order->status == 'Canceled' ? 'selected' : '' }}>Annulé</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
                     </form>
                 </div>
             </div>
@@ -132,18 +132,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteOrderModalLabel{{ $order->id }}">Delete Order</h5>
+                    <h5 class="modal-title" id="deleteOrderModalLabel{{ $order->id }}">Supprimer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete this order?</p>
+                    <p>Voulez vous supprimer cette commande ?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
                     <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}" class="inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete Order</button>
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
                     </form>
                 </div>
             </div>
