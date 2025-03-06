@@ -66,6 +66,17 @@ class CartController extends Controller
         if (!$isValidPlatform) {
             return redirect()->route('cart.index')->with('error', 'Cette plateforme n\'est pas disponible pour ce produit.');
         }
+
+
+        // Vérifier si le produit est en stock
+        if ($product->stock_quantity <= 0) {
+            session()->flash('error_add', 'Ce produit est en rupture de stock.');
+            return back(); // Reste sur la même page sans redirection explicite
+        }
+        
+        
+        
+        
     
         // Vérifier si le produit avec la même plateforme existe déjà dans le panier
         $existingProduct = $cart->products()
@@ -86,6 +97,9 @@ class CartController extends Controller
                 'platform_id' => $platformId, // Stocker la plateforme sélectionnée
             ]);
         }
+
+        // Décrémenter la quantité en stock
+        $product->decrement('stock_quantity');
     
         return redirect()->route('cart.index')->with('success', 'Produit ajouté au panier');
     }
@@ -104,6 +118,18 @@ class CartController extends Controller
 
         // Récupérer le panier de l'utilisateur
         $cart = Auth::user()->cart;
+
+         // Trouver le produit dans le panier
+        $product = $cart->products()->where('product_id', $productId)->first();
+
+
+        if ($product) {
+            // Récupérer la quantité actuelle dans le panier
+            $quantityInCart = $product->pivot->quantity;
+    
+            // Augmenter la quantité en stock
+            $product->increment('stock_quantity', $quantityInCart);
+        }
 
         // Supprimer le produit du panier
         $cart->products()->detach($productId);
@@ -134,28 +160,55 @@ class CartController extends Controller
      * Mettre à jour la quantité d'un produit dans le panier.
      */
 
-    public function update(Request $request, $productId)
-    {
-        // Vérifier si l'utilisateur est connecté
-        if (!Auth::check()) {
-            return redirect()->route('home'); // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté
+     public function update(Request $request, $productId)
+     {
+         // Vérifier si l'utilisateur est connecté
+         if (!Auth::check()) {
+             return redirect()->route('home'); // Redirige vers la page d'accueil si l'utilisateur n'est pas connecté
+         }
+     
+         // Récupérer le panier de l'utilisateur
+         $cart = Auth::user()->cart;
+     
+         // Valider la quantité demandée
+         $validated = $request->validate([
+             'quantity' => 'required|integer|min:1', // La quantité doit être un entier positif
+         ]);
+         $newQuantity = $validated['quantity'];
+     
+         // Trouver le produit dans le panier
+         $product = $cart->products()->where('product_id', $productId)->first();
+     
+         if (!$product) {
+             return redirect()->route('cart.index')->with('error', 'Produit introuvable dans le panier.');
+         }
+     
+         $currentQuantity = $product->pivot->quantity;
+     
+         // Vérifier si la quantité demandée dépasse le stock disponible
+         if ($newQuantity > $product->stock_quantity) {
+            return redirect()->route('cart.index')->with('error_update', 'Stock insuffisant pour cette quantité.');
         }
-
-        // Récupérer le panier de l'utilisateur
-        $cart = Auth::user()->cart;
-
-        // Valider la quantité
-        $validated = $request->validate([
-            'quantity' => 'required|integer|min:1', // La quantité doit être un entier positif
-        ]);
-        $quantity = $validated['quantity'];
-
-        // Mettre à jour la quantité du produit dans le panier
-        $cart->products()->updateExistingPivot($productId, [
-            'quantity' => $quantity,
-        ]);
-
-        return redirect()->route('cart.index')->with('success', 'Quantité mise à jour');
-    }
+        
+        
+     
+         // Calculer la différence de quantité demandée
+         $difference = $newQuantity - $currentQuantity;
+     
+         // Ajuster le stock en conséquence
+         if ($difference > 0) {
+             $product->decrement('stock_quantity', $difference);
+         } elseif ($difference < 0) {
+             $product->increment('stock_quantity', abs($difference));
+         }
+     
+         // Mettre à jour la quantité du produit dans le panier
+         $cart->products()->updateExistingPivot($productId, [
+             'quantity' => $newQuantity,
+         ]);
+     
+         return redirect()->route('cart.index')->with('success', 'Quantité mise à jour');
+     }
+     
     
 }

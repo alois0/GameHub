@@ -10,6 +10,8 @@
 </head>
 <body class="bg-gray-100">
 @include('layouts.alerts')
+@include('layouts.quantity-null-modal')
+
 
 <!-- Navbar -->
 <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center relative">
