@@ -26,7 +26,13 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::with(['images','categories', 'platforms', 'reviews.user'])->findOrFail($id);
-        return view('products.show', compact('product'));
+
+        // Fetch similar products based on the category of the current product
+        $similarProducts = Product::whereHas('categories', function ($query) use ($product) {
+            return $query->whereIn('categories.category_id', $product->categories->pluck('category_id'));
+        })->where('id', '!=', $product->id)->take(5)->get();
+
+        return view('products.show', compact('product', 'similarProducts'));
     }
 
 

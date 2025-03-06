@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détail du Produit - GameHub</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <style>
         /* Style pour la barre de défilement */
         #reviews-list::-webkit-scrollbar {
@@ -72,8 +74,18 @@
         .product-image{
             border-radius: 20px;
         }
-       
-       
+        .slick-prev, .slick-next {
+            color: black; /* Set the arrow color to black */
+        }
+        .slick-prev:before, .slick-next:before {
+            color: black; /* Set the arrow icon color to black */
+        }
+        .best-sellers-slider .slick-slide {
+            margin: 0 10px; /* Add gap between frames */
+        }
+        .slick-list {
+            margin: 0 -10px; /* Adjust the margin to account for the gap */
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -127,7 +139,6 @@
             <h2 class="text-2xl font-bold mb-4">Description</h2>
             <p>{{ $product->description }}</p>
         </div>
-
     </div>
     
     <!-- Visuels -->
@@ -141,6 +152,46 @@
                     <img src="{{ asset('image/products/' . $image->image_path) }}" class="large-image" alt="{{ $product->product_name }}">
                 @endif
             @endforeach
+        </div>
+    </div>
+
+    <!-- Produits Similaires -->
+    <div class="SimilarProducts">
+        <div class="container mx-auto mt-8">
+            <div class="section-header">
+                <h1 class="text-3xl font-bold text-gray-800">Produits Similaires</h1>
+            </div>
+            <div class="best-sellers-slider">
+                @foreach($similarProducts as $product)
+                    <div class="bg-white shadow-lg rounded-lg p-4">
+                        <div class="image-frame">
+                            <img src="{{ asset('image/' . $product->image_path) }}" alt="{{ $product->product_name }}">
+                        </div>
+                        <h3 class="font-semibold text-xl text-center">{{ $product->product_name }}</h3>
+                       
+                        <p class="text-gray-600 font-bold text-center">{{ number_format($product->price, 2) }} €</p>
+                        
+                        <!-- Affichage des catégories -->
+                        <p class="text-gray-500 text-center">
+                            Catégories :
+                            {{ $product->categories->pluck('category_name')->join(', ') }}
+                        </p>
+
+                        <!-- Affichage des plateformes -->
+                        <p class="text-gray-500 text-center">
+                            Plateformes :
+                            {{ $product->platforms->pluck('name')->join(', ') }}
+                        </p>
+
+                        <!-- Bouton pour accéder à la page détail -->
+                        <div class="button-container">
+                            <a href="{{ route('products.show', $product->id) }}" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 inline-block">
+                                Voir le produit
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
     
@@ -207,6 +258,25 @@
             const reviewsList = document.getElementById('reviews-list');
             reviewsList.classList.toggle('hidden');
             this.textContent = reviewsList.classList.contains('hidden') ? 'Voir les avis' : 'Masquer les avis';
+        });
+    </script>
+
+    <!-- Include jQuery and Slick slider scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.best-sellers-slider').slick({
+                infinite: true,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                dots: true,
+                arrows: true,
+                prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+                nextArrow: '<button type="button" class="slick-next">Next</button>',
+            });
         });
     </script>
 </body>
