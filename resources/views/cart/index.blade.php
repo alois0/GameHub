@@ -10,9 +10,6 @@
     <!-- Navigation -->
     @include('components.nav')
 
-
-    
-
     <!-- Contenu du panier -->
     <div class="container mx-auto mt-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Votre Panier</h1>
@@ -22,6 +19,7 @@
                 <table class="min-w-full table-auto">
                     <thead>
                         <tr class="bg-gray-200">
+                            <th class="px-4 py-2 text-left">Image</th>
                             <th class="px-4 py-2 text-left">Produit</th>
                             <th class="px-4 py-2 text-left">Plateforme</th>
                             <th class="px-4 py-2 text-left">Quantité</th>
@@ -33,6 +31,9 @@
                     <tbody>
                         @foreach($cart->products as $product)
                             <tr class="border-b">
+                                <td class="px-4 py-2">
+                                    <img src="{{ asset('image/' . $product->image_path) }}" alt="{{ $product->product_name }}" class="h-16 w-16 object-cover">
+                                </td>
                                 <td class="px-4 py-2">{{ $product->product_name }}</td>
 
                                 <!-- Correction de l'affichage de la plateforme -->
@@ -41,13 +42,13 @@
                                 </td>
 
                                 <td class="px-4 py-2">
-                                <form action="{{ route('cart.update', $product->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="number" name="quantity" value="{{ $product->pivot->quantity }}" min="1" class="w-16 text-center">
-                                    <button type="submit" class="px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600">Modifier</button>
-                                </form>
-                            </td>
+                                    <form action="{{ route('cart.update', $product->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="number" name="quantity" value="{{ $product->pivot->quantity }}" min="1" class="w-16 text-center">
+                                        <button type="submit" class="px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600">Modifier</button>
+                                    </form>
+                                </td>
                                 <td class="px-4 py-2">{{ number_format($product->pivot->price, 2) }} €</td>
                                 <td class="px-4 py-2">{{ number_format($product->pivot->price * $product->pivot->quantity, 2) }} €</td>
                                 <td class="px-4 py-2">
@@ -95,7 +96,5 @@
     <div class="h-32"></div>
 
     @include('components.footer')
-
-
 </body>
 </html>

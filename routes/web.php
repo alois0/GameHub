@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
@@ -63,7 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('{phoneId}', [PhoneController::class, 'destroy'])->name('phones.destroy');
     });
 
-    // Routes pour les produits
+    
     
 
     // Routes pour le panier
@@ -155,9 +156,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
 });
 
-//serach
-Route::get('/search', [ProductController::class, 'search'])->name('products.search');
-
+// Routes search
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
 
 
 
