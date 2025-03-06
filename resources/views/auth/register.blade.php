@@ -26,24 +26,40 @@
         <label for="name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
         <input type="text" name="name" id="name" value="{{ old('name') }}" required
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+
+            @error('name')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
     </div>
 
     <div class="mb-4">
         <label for="email" class="block text-sm font-medium text-gray-700">Adresse mail</label>
         <input type="email" name="email" id="email" value="{{ old('email') }}" required
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+
+            @error('email')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
     </div>
 
     <div class="mb-4">
         <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
         <input type="password" name="password" id="password" required
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+
+            @error('password')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
     </div>
 
     <div class="mb-4">
         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmez le mot de passe</label>
         <input type="password" name="password_confirmation" id="password_confirmation" required
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+
+            @error('name')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
     </div>
 
                 <!-- Adresse -->
@@ -85,6 +101,10 @@
                 <input type="text" name="phone[]" id="phone_{{ $index }}" value="{{ $tel }}"
                     placeholder="Numéro de téléphone"
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+
+                    @error('phone.' . $index)
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
             </div>
         @endforeach
     </div>
