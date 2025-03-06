@@ -56,43 +56,59 @@
     @include('components.nav')
 
     <!-- Contenu des produits -->
-    <div class="container mx-auto mt-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Tous les Produits</h1>
-
-        <div class="grid grid-cols-3 gap-6">
-            @foreach($products as $product)
-                <div class="bg-white shadow-lg rounded-lg p-4">
-                    <div class="image-frame">
-                        <img src="{{ asset('image/' . $product->image_path) }}" alt="{{ $product->product_name }}">
-                    </div>
-                    <h3 class="font-semibold text-xl text-center">{{ $product->product_name }}</h3>
-                   
-                    <p class="text-gray-600 font-bold text-center">{{ number_format($product->price, 2) }} €</p>
-                    
-                    <!-- Affichage des catégories -->
-                    <p class="text-gray-500 text-center">
-                        Catégories :
-                        {{ $product->categories->pluck('category_name')->join(', ') }}
-                    </p>
-
-                    <!-- Affichage des plateformes -->
-                    <p class="text-gray-500 text-center">
-                        Plateformes :
-                        {{ $product->platforms->pluck('name')->join(', ') }}
-                    </p>
-
-                    <!-- Bouton pour accéder à la page détail -->
-                    <div class="button-container">
-                        <a href="{{ route('products.show', $product->id) }}" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 inline-block">
-                            Voir le produit
-                        </a>
-                    </div>
+    <div class="container mx-auto">
+        @if(isset($query))
+            <h1 class="text-2xl font-bold mb-4">Résultats de recherche pour "{{ $query }}"</h1>
+            @if($products->isEmpty())
+                <p>Aucun produit trouvé.</p>
+            @else
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($products as $product)
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-xl font-bold">{{ $product->product_name }}</h2>
+                            <p>{{ $product->description }}</p>
+                            <a href="{{ route('products.show', $product->id) }}" class="text-green-500 hover:underline">Voir le produit</a>
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
-        </div>
-        <div class="mt-6 flex justify-center">
-        {{ $products->links() }}
-        </div>
+            @endif
+        @else
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Tous les Produits</h1>
+            <div class="grid grid-cols-3 gap-6">
+                @foreach($products as $product)
+                    <div class="bg-white shadow-lg rounded-lg p-4">
+                        <div class="image-frame">
+                            <img src="{{ asset('image/' . $product->image_path) }}" alt="{{ $product->product_name }}">
+                        </div>
+                        <h3 class="font-semibold text-xl text-center">{{ $product->product_name }}</h3>
+                       
+                        <p class="text-gray-600 font-bold text-center">{{ number_format($product->price, 2) }} €</p>
+                        
+                        <!-- Affichage des catégories -->
+                        <p class="text-gray-500 text-center">
+                            Catégories :
+                            {{ $product->categories->pluck('category_name')->join(', ') }}
+                        </p>
+
+                        <!-- Affichage des plateformes -->
+                        <p class="text-gray-500 text-center">
+                            Plateformes :
+                            {{ $product->platforms->pluck('name')->join(', ') }}
+                        </p>
+
+                        <!-- Bouton pour accéder à la page détail -->
+                        <div class="button-container">
+                            <a href="{{ route('products.show', $product->id) }}" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 inline-block">
+                                Voir le produit
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="mt-6 flex justify-center">
+                {{ $products->links() }}
+            </div>
+        @endif
     </div>
 
     <div class="h-32"></div>

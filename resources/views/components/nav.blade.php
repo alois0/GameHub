@@ -6,7 +6,6 @@
     <title>Menu Utilisateur avec Panier</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
 </head>
 <body class="bg-gray-100">
 @include('layouts.alerts')
@@ -15,13 +14,19 @@
 
 <!-- Navbar -->
 <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center relative">
-    <div class="text-xl font-bold">
+    <div class="flex items-center space-x-4">
         <a href="{{ route('home') }}" class="navbar-brand">
             <img src="{{ asset('image/LOgo.png') }}" alt="Logo" class="h-10">
         </a>
+        @if(Route::currentRouteName() == 'home' || Route::currentRouteName() == 'products.index')
+        <form action="{{ route('search') }}" method="GET" class="d-flex ml-8" role="search">
+            <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit" style="border-radius: 20px;background: linear-gradient(90deg, #289EB6 0%, #248E5E 100%);color:white">Search</button>
+        </form>
+        @endif
     </div>
 
-    <ul class="flex gap-4 items-center">
+    <ul class="flex gap-4 items-center ml-8">
         <li><a href="{{ route('products.index') }}" class="hover:text-green-500">Produits</a></li>
 
         <!-- Icône Panier -->
