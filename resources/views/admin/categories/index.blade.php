@@ -5,39 +5,32 @@
 @section('content')
     <h1 class="text-2xl font-bold mb-4">Catégories</h1>
     <button class="btn btn-success mb-4" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Ajouter</button>
-    <div class="overflow-x-auto mb-8" style="max-height: 80vh;">
-        <table id="categoriesTable" class="min-w-full bg-white table-fixed">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b w-1/12 text-center">ID</th>
-                    <th class="py-2 px-4 border-b w-3/12 text-center">Nom</th>
-                    <th class="py-2 px-4 border-b w-4/12 text-center">Description</th>
-                    <th class="py-2 px-4 border-b w-2/12 text-center">Image</th>
-                    <th class="py-2 px-4 border-b w-2/12 text-center">Operations</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($categories as $category)
-                <tr>
-                    <td class="py-2 px-4 border-b text-center">{{ $category->id }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ $category->category_name }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ $category->description }}</td>
-                    <td class="py-2 px-4 border-b text-center">
-                        @if($category->category_image)
-                            <img src="{{ asset('image/' . $category->category_image) }}" alt="{{ $category->category_image }}" class="w-16 h-16 object-cover">
-                        @else
-                            No Image
-                        @endif
-                    </td>
-                    <td class="py-2 px-4 border-b text-center">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-id="{{ $category->id }}" data-name="{{ $category->category_name }}" data-description="{{ $category->description }}" data-image="{{ $category->category_image }}">Modifier</button>
-                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-id="{{ $category->id }}">Supprimer</button>
-                        </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+    
+    @component('components.admin-table', [
+        'id' => 'categoriesTable',
+        'headers' => ['ID', 'Nom', 'Description', 'Image', 'Operations']
+    ])
+        @slot('slot')
+            @foreach($categories as $category)
+            <tr>
+                <td class="py-2 px-4 border-b text-center">{{ $category->id }}</td>
+                <td class="py-2 px-4 border-b text-center">{{ $category->category_name }}</td>
+                <td class="py-2 px-4 border-b text-center">{{ $category->description }}</td>
+                <td class="py-2 px-4 border-b text-center">
+                    @if($category->category_image)
+                        <img src="{{ asset('image/' . $category->category_image) }}" alt="{{ $category->category_image }}" class="w-16 h-16 object-cover">
+                    @else
+                        No Image
+                    @endif
+                </td>
+                <td class="py-2 px-4 border-b text-center">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-id="{{ $category->id }}" data-name="{{ $category->category_name }}" data-description="{{ $category->description }}" data-image="{{ $category->category_image }}">Modifier</button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-id="{{ $category->id }}">Supprimer</button>
+                </td>
+            </tr>
+            @endforeach
+        @endslot
+    @endcomponent
 
     <!-- Add Category Modal -->
     <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
@@ -149,13 +142,6 @@
 
             var deleteCategoryForm = deleteCategoryModal.querySelector('#deleteCategoryForm');
             deleteCategoryForm.action = '/admin/categories/' + id;
-        });
-
-        // Initialize DataTables
-        $(document).ready(function() {
-            $('#categoriesTable').DataTable({
-                "pageLength": 25
-            });
         });
     </script>
 @endsection

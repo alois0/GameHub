@@ -23,36 +23,27 @@
         </div>
     @endif
 
-    <div class="overflow-x-auto mb-8" style="max-height: 80vh;">
-        <table id="ordersTable" class="min-w-full bg-white table-fixed">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b w-1/12 text-center">ID</th>
-                    <th class="py-2 px-4 border-b w-2/12 text-center">Client</th>
-                    <th class="py-2 px-4 border-b w-2/12 text-center">Total</th>
-                    <th class="py-2 px-4 border-b w-2/12 text-center">Status</th>
-                    <th class="py-2 px-4 border-b w-2/12 text-center">Date</th>
-                    <th class="py-2 px-4 border-b w-3/12 text-center">Operations</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($orders as $order)
-                <tr>
-                    <td class="py-2 px-4 border-b text-center">{{ $order->id }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ $order->user->name }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ number_format($order->total, 2) }} €</td>
-                    <td class="py-2 px-4 border-b text-center">{{ $order->status }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ $order->created_at->format('d/m/Y') }}</td>
-                    <td class="py-2 px-4 border-b text-center">
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewOrderModal{{ $order->id }}">Détails</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editOrderModal{{ $order->id }}">Modifier</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ $order->id }}">Supprimer</button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+    @component('components.admin-table', [
+        'id' => 'ordersTable',
+        'headers' => ['ID', 'Client', 'Total', 'Status', 'Date', 'Operations']
+    ])
+        @slot('slot')
+            @foreach($orders as $order)
+            <tr>
+                <td class="py-2 px-4 border-b text-center">{{ $order->id }}</td>
+                <td class="py-2 px-4 border-b text-center">{{ $order->user->name }}</td>
+                <td class="py-2 px-4 border-b text-center">{{ number_format($order->total, 2) }} €</td>
+                <td class="py-2 px-4 border-b text-center">{{ $order->status }}</td>
+                <td class="py-2 px-4 border-b text-center">{{ $order->created_at->format('d/m/Y') }}</td>
+                <td class="py-2 px-4 border-b text-center">
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewOrderModal{{ $order->id }}">Détails</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editOrderModal{{ $order->id }}">Modifier</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ $order->id }}">Supprimer</button>
+                </td>
+            </tr>
+            @endforeach
+        @endslot
+    @endcomponent
 
     <!-- Modals -->
     @foreach($orders as $order)
