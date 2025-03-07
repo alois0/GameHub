@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -20,9 +21,13 @@ class CartController extends Controller
         }
     
         $cart = Auth::user()->cart->load(['products.platforms']); // Charger les plateformes via la relation 'platforms'
-    
+        Log::info('Panier récupéré pour l\'utilisateur ID : ' . Auth::id(), ['cart' => $cart]);
 
-        
+         // Calculer le total du panier
+         $totalPrice = $cart->products->sum(function ($product) {
+            return $product->pivot->price * $product->pivot->quantity;
+        });
+        Log::info('Total du panier pour l\'utilisateur ID : ' . Auth::id() . ' est de ' . $totalPrice);
 
 
         return view('cart.index', compact('cart'));
