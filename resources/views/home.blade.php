@@ -60,6 +60,12 @@
             margin: 0;
         }
 
+        .title {
+            font-size: 50px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -84,7 +90,12 @@
                 </div>
             @endif
         @else
+
+            <div style="height:40px; padding: 20px;">
+                <!-- <h1 class="title">GameHub</h1> -->
+            </div>
             <!-- Carousel Slider -->
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Jeux recents</h1>
             <div class="carousel-slider">
                 @foreach($latestProducts as $index => $product)
                     <div>
@@ -96,7 +107,7 @@
             <!-- Categories -->
             <div class="Categories">
                 <div class="container mx-auto mt-8">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Tous les Categories</h1>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Toutes les Categories</h1>
                     <div class="category-slider">
                         @foreach($categories as $category)
                             <div class="bg-white shadow-lg rounded-lg p-4">

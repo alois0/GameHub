@@ -13,14 +13,16 @@ class Category extends Model
     protected $primaryKey = 'category_id'; // Clé primaire personnalisée
     
     public $timestamps = false;
+
     // Attributs assignables
     protected $fillable = [
         'category_name',
         'description',
-        'category_image',
     ];
 
-    // Relation : Une catégorie peut avoir plusieurs produits
+    /**
+     * Relation : Une catégorie peut avoir plusieurs produits.
+     */
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_category', 'category_id', 'product_id');
