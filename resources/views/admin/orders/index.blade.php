@@ -23,6 +23,16 @@
         </div>
     @endif
 
+    @php
+        $statusTranslations = [
+            'Pending' => 'En attente',
+            'Processing' => 'En cours de traitement',
+            'Shipped' => 'Expédié',
+            'Delivered' => 'Livré',
+            'Canceled' => 'Annulé',
+        ];
+    @endphp
+
     @component('components.admin-table', [
         'id' => 'ordersTable',
         'headers' => ['ID', 'Client', 'Total', 'Status', 'Date', 'Operations']
@@ -33,7 +43,7 @@
                 <td class="py-2 px-4 border-b text-center">{{ $order->id }}</td>
                 <td class="py-2 px-4 border-b text-center">{{ $order->user->name }}</td>
                 <td class="py-2 px-4 border-b text-center">{{ number_format($order->total, 2) }} €</td>
-                <td class="py-2 px-4 border-b text-center">{{ $order->status }}</td>
+                <td class="py-2 px-4 border-b text-center">{{ $statusTranslations[$order->status] ?? $order->status }}</td>
                 <td class="py-2 px-4 border-b text-center">{{ $order->created_at->format('d/m/Y') }}</td>
                 <td class="py-2 px-4 border-b text-center">
                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewOrderModal{{ $order->id }}">Détails</button>
@@ -59,7 +69,7 @@
                     <h5>Commande ID: {{ $order->id }}</h5>
                     <p>Client: {{ $order->user->name }}</p>
                     <p>Totale: {{ number_format($order->total, 2) }} €</p>
-                    <p>Status: {{ $order->status }}</p>
+                    <p>Status: {{ $statusTranslations[$order->status] ?? $order->status }}</p>
                     <p>Date: {{ $order->created_at->format('d/m/Y') }}</p>
                     <h5>Articles</h5>
                     <table class="table">
@@ -145,7 +155,10 @@
     <script>
         $(document).ready(function() {
             $('#ordersTable').DataTable({
-                "pageLength": 25
+                "pageLength": 10,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/fr_fr.json"
+                }
             });
         });
     </script>
