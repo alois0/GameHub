@@ -41,15 +41,9 @@
             @foreach($orders as $order)
             <tr>
                 <td class="py-2 px-4 border-b text-center">{{ $order->id }}</td>
-<<<<<<< HEAD
-                <td class="py-2 px-4 border-b text-center">{{ optional($order->user)->name ?? 'N/A' }}</td>
-                <td class="py-2 px-4 border-b text-center">{{ number_format($order->total_price, 2) }} €</td>
-                <td class="py-2 px-4 border-b text-center">{{ $order->status }}</td>
-=======
                 <td class="py-2 px-4 border-b text-center">{{ $order->user->name }}</td>
-                <td class="py-2 px-4 border-b text-center">{{ number_format($order->total, 2) }} €</td>
+                <td class="py-2 px-4 border-b text-center">{{ number_format($order->total_price, 2) }} €</td>
                 <td class="py-2 px-4 border-b text-center">{{ $statusTranslations[$order->status] ?? $order->status }}</td>
->>>>>>> b7e591ca2005507cbc9612a7d090ee9c140d9cc7
                 <td class="py-2 px-4 border-b text-center">{{ $order->created_at->format('d/m/Y') }}</td>
                 <td class="py-2 px-4 border-b text-center">
                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewOrderModal{{ $order->id }}">Détails</button>
@@ -73,15 +67,9 @@
                 </div>
                 <div class="modal-body">
                     <h5>Commande ID: {{ $order->id }}</h5>
-<<<<<<< HEAD
-                    <p>Client: {{ optional($order->user)->name ?? 'N/A' }}</p>
-                    <p>Total: {{ number_format($order->total_price, 2) }} €</p>
-                    <p>Statut: {{ $order->status }}</p>
-=======
                     <p>Client: {{ $order->user->name }}</p>
-                    <p>Totale: {{ number_format($order->total, 2) }} €</p>
+                    <p>Totale: {{ number_format($order->total_price, 2) }} €</p>
                     <p>Status: {{ $statusTranslations[$order->status] ?? $order->status }}</p>
->>>>>>> b7e591ca2005507cbc9612a7d090ee9c140d9cc7
                     <p>Date: {{ $order->created_at->format('d/m/Y') }}</p>
                     
                     <h5>Articles</h5>
