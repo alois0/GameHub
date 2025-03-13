@@ -10,8 +10,21 @@ class AdminOrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('user', 'orderDetails.product', 'orderDetails.platform', 'orderDetails.address')->get();
-        return view('admin.orders.index', compact('orders'));
+        try {
+            // Récupération des commandes avec leurs relations, triées par date de création
+            $orders = Order::with([
+                'user',
+                'orderDetails.product',
+                'orderDetails.platform',
+                'orderDetails.address'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // Ajout de la pagination
+
+            return view('admin.orders.index', compact('orders'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Une erreur est survenue lors de la récupération des commandes.');
+        }
     }
 
     public function update(Request $request, $id)

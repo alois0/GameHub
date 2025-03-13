@@ -25,14 +25,14 @@
 
     @component('components.admin-table', [
         'id' => 'ordersTable',
-        'headers' => ['ID', 'Client', 'Total', 'Status', 'Date', 'Operations']
+        'headers' => ['ID', 'Client', 'Total', 'Statut', 'Date', 'Opérations']
     ])
         @slot('slot')
             @foreach($orders as $order)
             <tr>
                 <td class="py-2 px-4 border-b text-center">{{ $order->id }}</td>
-                <td class="py-2 px-4 border-b text-center">{{ $order->user->name }}</td>
-                <td class="py-2 px-4 border-b text-center">{{ number_format($order->total, 2) }} €</td>
+                <td class="py-2 px-4 border-b text-center">{{ optional($order->user)->name ?? 'N/A' }}</td>
+                <td class="py-2 px-4 border-b text-center">{{ number_format($order->total_price, 2) }} €</td>
                 <td class="py-2 px-4 border-b text-center">{{ $order->status }}</td>
                 <td class="py-2 px-4 border-b text-center">{{ $order->created_at->format('d/m/Y') }}</td>
                 <td class="py-2 px-4 border-b text-center">
@@ -52,38 +52,52 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewOrderModalLabel{{ $order->id }}">Order Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="viewOrderModalLabel{{ $order->id }}">Détails de la commande</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <div class="modal-body">
                     <h5>Commande ID: {{ $order->id }}</h5>
-                    <p>Client: {{ $order->user->name }}</p>
-                    <p>Totale: {{ number_format($order->total, 2) }} €</p>
-                    <p>Status: {{ $order->status }}</p>
+                    <p>Client: {{ optional($order->user)->name ?? 'N/A' }}</p>
+                    <p>Total: {{ number_format($order->total_price, 2) }} €</p>
+                    <p>Statut: {{ $order->status }}</p>
                     <p>Date: {{ $order->created_at->format('d/m/Y') }}</p>
+                    
                     <h5>Articles</h5>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Quantité</th>
-                                <th>Prix</th>
-                                <th>Platforme</th>
-                                <th>Addresse</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($order->orderDetails as $detail)
-                            <tr>
-                                <td>{{ $detail->product->product_name }}</td>
-                                <td>{{ $detail->quantity }}</td>
-                                <td>{{ number_format($detail->price, 2) }} €</td>
-                                <td>{{ $detail->platform->name }}</td>
-                                <td>{{ $detail->address->full_address }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    @if($order->orderDetails->isNotEmpty())
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Quantité</th>
+                                    <th>Prix Unitaire</th>
+                                    <th>Plateforme</th>
+                                    <th>Adresse</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($order->orderDetails as $detail)
+                                <tr>
+                                    <td>{{ optional($detail->product)->product_name ?? 'N/A' }}</td>
+                                    <td>{{ $detail->quantity }}</td>
+                                    <td>{{ number_format($detail->price_each, 2) }} €</td>
+                                    <td>{{ optional($detail->platform)->name ?? 'N/A' }}</td>
+                                    <td>
+                                        @if(optional($detail->address))
+                                            {{ optional($detail->address)->street_number ?? '' }}
+                                            {{ optional($detail->address)->street_name ?? '' }},
+                                            {{ optional($detail->address)->city ?? '' }},
+                                            {{ optional($detail->address)->postal_code ?? '' }}
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p>Aucun article dans cette commande.</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -95,14 +109,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editOrderModalLabel{{ $order->id }}">Modifier</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editOrderForm{{ $order->id }}" method="POST" action="{{ route('admin.orders.update', $order->id) }}">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="editOrderStatus{{ $order->id }}" class="form-label">Status</label>
+                            <label for="editOrderStatus{{ $order->id }}" class="form-label">Statut</label>
                             <select class="form-control" id="editOrderStatus{{ $order->id }}" name="status" required>
                                 <option value="Pending" {{ $order->status == 'Pending' ? 'selected' : '' }}>En attente</option>
                                 <option value="Processing" {{ $order->status == 'Processing' ? 'selected' : '' }}>En cours de traitement</option>
@@ -124,14 +138,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteOrderModalLabel{{ $order->id }}">Supprimer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Voulez vous supprimer cette commande ?</p>
+                    <p>Voulez-vous vraiment supprimer cette commande ?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-                    <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}" class="inline">
+                    <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Supprimer</button>
