@@ -21,7 +21,7 @@
 <body class="bg-gray-100 flex">
     @include('admin.sidebar')
 
-    <div class="flex-1 p-8">
+    <div class="flex-1 p-8 ml-64">
         @yield('content')
     </div>
 

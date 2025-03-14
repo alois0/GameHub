@@ -35,7 +35,7 @@
 
     @component('components.admin-table', [
         'id' => 'ordersTable',
-        'headers' => ['ID', 'Client', 'Total', 'Statut', 'Date', 'Opérations']
+        'headers' => ['ID', 'Client', 'Total', 'Status', 'Date', 'Operations']
     ])
         @slot('slot')
             @foreach($orders as $order)
@@ -67,9 +67,9 @@
                 </div>
                 <div class="modal-body">
                     <h5>Commande ID: {{ $order->id }}</h5>
-                    <p>Client: {{ $order->user->name }}</p>
-                    <p>Totale: {{ number_format($order->total_price, 2) }} €</p>
-                    <p>Status: {{ $statusTranslations[$order->status] ?? $order->status }}</p>
+                    <p>Client: {{ optional($order->user)->name ?? 'N/A' }}</p>
+                    <p>Total: {{ number_format($order->total_price, 2) }} €</p>
+                    <p>Statut: {{ $order->status }}</p>
                     <p>Date: {{ $order->created_at->format('d/m/Y') }}</p>
                     
                     <h5>Articles</h5>
@@ -112,21 +112,21 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Edit Order Modal -->
     <div class="modal fade" id="editOrderModal{{ $order->id }}" tabindex="-1" aria-labelledby="editOrderModalLabel{{ $order->id }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editOrderModalLabel{{ $order->id }}">Modifier</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editOrderForm{{ $order->id }}" method="POST" action="{{ route('admin.orders.update', $order->id) }}">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="editOrderStatus{{ $order->id }}" class="form-label">Statut</label>
+                            <label for="editOrderStatus{{ $order->id }}" class="form-label">Status</label>
                             <select class="form-control" id="editOrderStatus{{ $order->id }}" name="status" required>
                                 <option value="Pending" {{ $order->status == 'Pending' ? 'selected' : '' }}>En attente</option>
                                 <option value="Processing" {{ $order->status == 'Processing' ? 'selected' : '' }}>En cours de traitement</option>
@@ -148,14 +148,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteOrderModalLabel{{ $order->id }}">Supprimer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Voulez-vous vraiment supprimer cette commande ?</p>
+                    <p>Voulez vous supprimer cette commande ?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-                    <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}">
+                    <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}" class="inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Supprimer</button>

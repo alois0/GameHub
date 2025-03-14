@@ -1,4 +1,4 @@
-<div class="bg-gray-800 text-white w-64 min-h-screen p-4">
+<div class="bg-gray-800 text-white w-64 min-h-screen p-4 fixed h-full">
     <h2 class="text-2xl font-bold mb-4">Administration</h2>
     <ul>
         <li class="mb-2">
