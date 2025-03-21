@@ -14,7 +14,7 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased">
+<body class="font-sans antialiased flex flex-col min-h-screen">
     <div class="min-h-screen bg-gray-100">
         <!-- Navigation -->
         <nav class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
@@ -50,7 +50,7 @@
         @endisset
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow">
             {{ $slot }}
         </main>
 

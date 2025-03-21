@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Mail;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use App\Models\Order;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderConfirmedNotification;
+use App\Mail\SendCodes; // Import the SendCodes Mailable class
 
 class PaymentController extends Controller
 {
@@ -114,6 +116,13 @@ class PaymentController extends Controller
 
             Log::info('✅ Email envoyé.');
 
+
+            // $codes = [];
+            // for ($i = 0; $i < 12; $i++) {
+            //     $codes[] = strtoupper(bin2hex(random_bytes(12)));
+            // }
+            // Mail::to(users: $user->email)->send(new SendCodes($order, $codes)); // Ensure $user->email is used correctly
+            // // Mail::to($order->user_id->email)->send(new SendCodes($order, $codes));
 
             // Vider le panier
             $cart->products()->detach();

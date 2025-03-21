@@ -37,6 +37,10 @@ Route::resource('products', ProductController::class)
         'update' => 'products.update', 
     ]);
 
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 // Groupement des routes nécessitant une authentification
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -205,5 +209,3 @@ Route::get('password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordCon
 Route::post('password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
 // Routes d'authentification (incluses par Laravel Breeze ou autre package)
 require __DIR__ . '/auth.php';
-
-

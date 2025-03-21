@@ -8,14 +8,14 @@
 
     <!-- Display Success Message -->
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
         </div>
     @endif
 
     <!-- Display Validation Errors -->
     @if($errors->any())
-        <div class="alert alert-danger">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
             <ul>
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -26,14 +26,14 @@
 
     @component('components.admin-table', [
         'id' => 'productsTable',
-        'headers' => ['ID', 'Nom', 'Description', 'Prix', 'Quantité en stock', 'Catégorie', 'Actions']
+        'headers' => ['ID', 'Nom', 'Description', 'Prix', 'Quantité en stock', 'Catégorie', 'Opérations']
     ])
         @slot('slot')
             @foreach($products as $product)
             <tr>
                 <td class="py-2 px-4 border-b text-center">{{ $product->id }}</td>
                 <td class="py-2 px-4 border-b text-center">{{ $product->product_name }}</td>
-                <td class="py-2 px-4 border-b text-center">{{ $product->description }}</td>
+                <td class="py-2 px-20 border-b text-center">{{ $product->description }}</td>
                 <td class="py-2 px-4 border-b text-center">{{ number_format($product->price, 2) }} €</td>
                 <td class="py-2 px-4 border-b text-center">{{ $product->stock_quantity }}</td>
                 <td class="py-2 px-4 border-b text-center">
@@ -42,71 +42,9 @@
                     @endforeach
                 </td>
                 <td class="py-2 px-4 border-b text-center">
-                    <button type="button" class="text-blue-500 hover:text-blue-700" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">Modifier</button>
-
-                    <!-- Edit Product Modal -->
-                    <div class="modal fade" id="editProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="editProductModalLabel{{ $product->id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editProductModalLabel{{ $product->id }}">Modifier Produit</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="editProductForm{{ $product->id }}" method="POST" action="{{ route('admin.products.update', $product->id) }}">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="mb-3">
-                                            <label for="editProductName{{ $product->id }}" class="form-label">Nom</label>
-                                            <input type="text" class="form-control" id="editProductName{{ $product->id }}" name="product_name" value="{{ $product->product_name }}" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="editProductDescription{{ $product->id }}" class="form-label">Description</label>
-                                            <textarea class="form-control" id="editProductDescription{{ $product->id }}" name="description" required>{{ $product->description }}</textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="editProductPrice{{ $product->id }}" class="form-label">Prix</label>
-                                            <input type="number" step="0.01" class="form-control" id="editProductPrice{{ $product->id }}" name="price" value="{{ $product->price }}" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="editProductStock{{ $product->id }}" class="form-label">Quantité en stock</label>
-                                            <input type="number" class="form-control" id="editProductStock{{ $product->id }}" name="stock_quantity" value="{{ $product->stock_quantity }}" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="editProductCategory{{ $product->id }}" class="form-label">Catégorie</label>
-                                            <select class="form-control" id="editProductCategory{{ $product->id }}" name="category_id[]" multiple required>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->category_id }}" {{ $product->categories->contains($category->category_id) ? 'selected' : '' }}>{{ $category->category_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="text-red-500 hover:text-red-700" data-bs-toggle="modal" data-bs-target="#deleteProductModal{{ $product->id }}">Supprimer</button>
-                    <div class="modal fade" id="deleteProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="deleteProductModalLabel{{ $product->id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteProductModalLabel{{ $product->id }}">Supprimer</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Êtes vous sûre?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-                                    <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                    <div style="display: flex; justify-content: space-around;">
+                        <button type="button" class="btn btn-primary" style="margin-right:5px" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">Modifier</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal{{ $product->id }}">Supprimer</button>
                     </div>
                 </td>
             </tr>
@@ -114,12 +52,14 @@
         @endslot
     @endcomponent
 
+    <!-- Modals -->
+    @foreach($products as $product)
     <!-- Add Product Modal -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                    <h5 class="modal-title" id="addProductModalLabel">Ajouter Produit</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -156,18 +96,70 @@
         </div>
     </div>
 
-    <script>
-        // Initialize DataTables
-        $(document).ready(function() {
-            $('#productsTable').DataTable({
-                "pageLength": 25
-            });
-        });
-    </script>
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="editProductModalLabel{{ $product->id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel{{ $product->id }}">Modifier Produit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm{{ $product->id }}" method="POST" action="{{ route('admin.products.update', $product->id) }}">
+                        @csrf
+                        @method('PUT')
+                        <div class="mb-3">
+                            <label for="editProductName{{ $product->id }}" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="editProductName{{ $product->id }}" name="product_name" value="{{ $product->product_name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductDescription{{ $product->id }}" class="form-label">Description</label>
+                            <textarea class="form-control" id="editProductDescription{{ $product->id }}" name="description" required>{{ $product->description }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductPrice{{ $product->id }}" class="form-label">Prix</label>
+                            <input type="number" step="0.01" class="form-control" id="editProductPrice{{ $product->id }}" name="price" value="{{ $product->price }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductStock{{ $product->id }}" class="form-label">Quantité en stock</label>
+                            <input type="number" class="form-control" id="editProductStock{{ $product->id }}" name="stock_quantity" value="{{ $product->stock_quantity }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductCategory{{ $product->id }}" class="form-label">Catégorie</label>
+                            <select class="form-control" id="editProductCategory{{ $product->id }}" name="category_id[]" multiple required>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->category_id }}" {{ $product->categories->contains($category->category_id) ? 'selected' : '' }}>{{ $category->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        function confirmDelete() {
-            return confirm('Are you sure you want to delete this product?');
-        }
-    </script>
+    <!-- Delete Product Modal -->
+    <div class="modal fade" id="deleteProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="deleteProductModalLabel{{ $product->id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteProductModalLabel{{ $product->id }}">Supprimer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes vous sûre?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+                    <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
 @endsection
