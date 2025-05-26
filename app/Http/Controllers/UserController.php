@@ -24,4 +24,7 @@ class UserController extends Controller
     // Passer les adresses à la vue
     return view('addresses.index', compact('addresses'));
 }
+
+
+
 }

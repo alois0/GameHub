@@ -20,6 +20,7 @@ class User extends Authenticatable
         'ville',
         'rue',
         'codepostal',
+        'user_role',
     ];
 
     /**
@@ -78,6 +79,11 @@ public function defaultAddress()
     return $this->hasOne(UserAddress::class)
                 ->where('is_default', 1)
                 ->with('addresses');
+}
+
+public function isAdmin()
+{
+    return $this->user_role === 'admin';
 }
 
 

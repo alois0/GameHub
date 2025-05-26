@@ -20,6 +20,7 @@ use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
+use App\Http\Middleware\AdminMiddleware;
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
@@ -136,7 +137,7 @@ Route::post('/products/{id}/reviews', [ProductReviewController::class, 'store'])
     ->name('reviews.store');
 
 // Route pour l'admin
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     
     Route::resource('admin/orders', AdminOrderController::class)->names([
