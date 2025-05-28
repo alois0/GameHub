@@ -166,35 +166,29 @@
                 <h1 class="text-3xl font-bold text-gray-800">Produits Similaires</h1>
             </div>
             <div class="best-sellers-slider">
-                @foreach($similarProducts as $product)
-                    <div class="bg-white shadow-lg rounded-lg p-4">
-                        <div class="image-frame">
-                            <img src="{{ asset('image/' . $product->image_path) }}" alt="{{ $product->product_name }}">
-                        </div>
-                        <h3 class="font-semibold text-xl text-center">{{ $product->product_name }}</h3>
-                       
-                        <p class="text-gray-600 font-bold text-center">{{ number_format($product->price, 2) }} €</p>
-                        
-                        <!-- Affichage des catégories -->
-                        <p class="text-gray-500 text-center">
-                            Catégories :
-                            {{ $product->categories->pluck('category_name')->join(', ') }}
-                        </p>
+                @foreach($similarProducts as $similar)
+    <div class="bg-white shadow-lg rounded-lg p-4">
+        <div class="image-frame">
+            <img src="{{ asset('image/' . $similar->image_path) }}" alt="{{ $similar->product_name }}">
+        </div>
+        <h3 class="font-semibold text-xl text-center">{{ $similar->product_name }}</h3>
+        <p class="text-gray-600 font-bold text-center">{{ number_format($similar->price, 2) }} €</p>
+        <p class="text-gray-500 text-center">
+            Catégories :
+            {{ $similar->categories->pluck('category_name')->join(', ') }}
+        </p>
+        <p class="text-gray-500 text-center">
+            Plateformes :
+            {{ $similar->platforms->pluck('name')->join(', ') }}
+        </p>
+        <div class="button-container">
+            <a href="{{ route('products.show', $similar->id) }}" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 inline-block">
+                Voir le produit
+            </a>
+        </div>
+    </div>
+@endforeach
 
-                        <!-- Affichage des plateformes -->
-                        <p class="text-gray-500 text-center">
-                            Plateformes :
-                            {{ $product->platforms->pluck('name')->join(', ') }}
-                        </p>
-
-                        <!-- Bouton pour accéder à la page détail -->
-                        <div class="button-container">
-                            <a href="{{ route('products.show', $product->id) }}" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 inline-block">
-                                Voir le produit
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
             </div>
         </div>
     </div>
