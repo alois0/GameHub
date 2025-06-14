@@ -21,6 +21,8 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\Auth\PasswordController;
+
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
@@ -42,6 +44,8 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+
+
 // Groupement des routes nécessitant une authentification
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -57,6 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::patch('/update-default-address', [ProfileController::class, 'updateDefaultAddress'])->name('profile.updateDefaultAddress');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::put('/edit', [PasswordController::class, 'update'])->name('profile.password.update');
         
     });
 
@@ -208,5 +213,7 @@ Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])-
 
 Route::get('password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+
+
 // Routes d'authentification (incluses par Laravel Breeze ou autre package)
 require __DIR__ . '/auth.php';
