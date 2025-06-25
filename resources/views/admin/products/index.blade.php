@@ -43,6 +43,7 @@
                 </td>
                 <td class="py-2 px-4 border-b text-center">
                     <div style="display: flex; justify-content: space-around;">
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#imagesModal{{ $product->id }}">Images Associés</button>
                         <button type="button" class="btn btn-primary" style="margin-right:5px" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">Modifier</button>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal{{ $product->id }}">Supprimer</button>
                     </div>
@@ -95,6 +96,33 @@
             </div>
         </div>
     </div>
+
+    <!-- Images Modal -->
+    <div class="modal fade" id="imagesModal{{ $product->id }}" tabindex="-1" aria-labelledby="imagesModalLabel{{ $product->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imagesModalLabel{{ $product->id }}">Images Associées - {{ $product->product_name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        @forelse($product->images as $image)
+                            <div class="col-md-4 mb-3">
+                                <img src="{{ asset('image/products/' . $image->image_path) }}" alt="Image" class="img-fluid rounded">
+                            </div>
+                        @empty
+                            <p class="text-center">Aucune image associée à ce produit.</p>
+                        @endforelse
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
     <!-- Edit Product Modal -->
     <div class="modal fade" id="editProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="editProductModalLabel{{ $product->id }}" aria-hidden="true">
